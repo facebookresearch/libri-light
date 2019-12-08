@@ -47,5 +47,5 @@ Libri-light offers 60+ k hours of unlabelled speech, a small training set for li
 
 ## License
 
-The Libri-light code is released under the XYZ license. See LICENSE for additional details.
+The Libri-light code is released under the MIT license. See LICENSE for additional details.
 
