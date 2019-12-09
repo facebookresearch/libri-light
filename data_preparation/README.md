@@ -41,17 +41,26 @@ In `OUTPUT_DIR`, there will be the same structure as above, but each file_name d
 
 ### 2. Get the limited-supervision train data
 
-The limited supervision rests on librispeech. If you do not already have it, you should first download librispeech:
+The limited supervision training sets are built on Librispeech. They consist in 10h, 1h, and 10 minute cuts with orthographic transciptions and aligned phoneme transcriptions, which can be used to train small models or fine-tune pretrained ones. This can be downloaded [here](https://dl.fbaipublicfiles.com/librilight/data/librispeech_finetuning.tgz).
 
-       mkdir librispeech
-       cd librispeech
-       wget http://www.openslr.org/resources/12/train-clean-100.tar.gz # train-clean-100 of librispeech 
-       wget http://www.openslr.org/resources/12/train-other-500.tar.gz # train-other-500 of librispeech
+The directory structure is the following:
+      
+      1h/        # data of the 1h split (made up of 6 folds of 10 min)
+         0/         # first 10 min fold
+           clean/     # 2 speakers, clean
+           other/     # 2 speakers, other
+         ...      
+         5/         # last 10 min fold
+           clean/     # 2 speakers, clean
+           other/     # 2 speakers, other
+      9h/        # remaining data of the 10h split (10h=1h+9h)
+         clean /    # 12 speakers, clean
+         other/     # 12 speakers, other
+      phones/    # phoneme alignment for all of the files
+     
 
+Alternatively, you can reconstruct this dataset by downloading by hand librispeech and running the scripts in `rebuild_limited_train/`.
 
-Then run the following script:
-
-       make_limited_train/split.sh train-clean-100 train-other-500
 
 ### 3. Get the dev and test sets (for evaluation) 
 
