@@ -126,7 +126,7 @@ python complete_metadata.py --path_metadata $OUTPUT_DOWNLOAD --out_dir $OUTPUT_F
 
 
 ![pipeline](data_preparation_pipeline.svg)
-
+Figure 1. Complete data preparation pipeline. 
 
 ## Format of Json files
 
