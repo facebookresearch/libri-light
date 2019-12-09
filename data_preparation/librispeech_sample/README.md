@@ -1,7 +1,7 @@
 # Getting Librispeech subsample
 
 This collection of scripts was used to subsample Librispeech data into 10h, 1h, and 10 min chunks. 
-These chunks are then used for fine-tuning the models trained with LibriBIG.
+These chunks are then used for fine-tuning the models trained with Librilight.
 
 The goal of the splitting process is to ensure that the chunks are approximately balanced w.r.t. 
 to the gender of the speakers and noise levels.
