@@ -34,13 +34,16 @@ where `dataset_name` is `small`, `medium`, `large`, or `duplicate`, `speakerID` 
 
 Once the dataset is downloaded and "untarred", into `UNLAB_DIR` you can check its statistics with the command
 
+```console
     python build_all_stats.py UNLAB_DIR OUTPUT_DIR
-
+```
 This will construct in `OUTPUT_DIR` two .png files (plus .json files in a .cache directory)
 
 Each file may be rather long and may not fit into memory.  As a final step, we provide a script to cut the files into roughly 60sec sequences obtained by concatenating consecutive voice activity chunks.
 
+```console
     python cut_by_vad.py --input_dir INPUT_DIR --output_dir OUTPUT_DIR
+```
 
 In `OUTPUT_DIR`, there will be the same structure as above, but each file_name directory will have a list of smaller files (`.flac`). You can change this step as fits your model. 
 
