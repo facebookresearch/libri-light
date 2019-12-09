@@ -24,19 +24,19 @@ The directory structure of the archives is the same as for librispeech:
 
     dataset_name/speakerID/file_name/
 
-where `dataset_name` is `small`, `medium`, `large`, or `duplicate`, `speakerID` is the librivox speakerID (a number), and `file_name` the name of the original LibriVox audio file. Inside each directory, you should find a `.flac` and a `.json`. See below for the format  of the `.json` files.
+where `dataset_name` is `small`, `medium`, `large`, or `duplicate`, `speakerID` is the librivox speakerID (a number), and `book_name` the name of the original LibriVox book file. Inside each book directory, you should find a set of `.flac` and corresponding `.json` files. See below for the format  of the `.json` files.
 
 Once the dataset is downloaded and "untarred", into `UNLAB_DIR/` you can check its statistics with the command
 
      python build_all_stats.py UNLAB_DIR UNLAB_DIR OUTPUT_DIR
      
-This will construct in `OUTPUT_DIR/` two .png files (plus .json files in a .cache directory)
+This will construct in `OUTPUT_DIR` two .png files (plus .json files in a .cache directory)
 
 Each file may be rather long and may not fit into memory.  As a final step, we provide a script to cut the files into roughly 60sec sequences obtained by concatenating consecutive voice activity chunks.
 
      python cut_by_vad.py --input_dir INPUT_DIR --output_dir OUTPUT_DIR
 
-In `OUTPUT_DIR`, there will be the same structure as above, but each file_name directory will have a list of smaller files (`.flac`).
+In `OUTPUT_DIR`, there will be the same structure as above (except that `book_name` is replaced by its corresponding unique `bookID`), band each book directory will now contain a list of smaller files (`.flac`).
 
 
 ### 2. Get the limited-supervision train data
@@ -61,8 +61,7 @@ The directory structure is the following:
       phones/    # phoneme alignment for all of the files
      
 
-The 10h split is made by combining the data from the `9h/` and the `1h` directories. The 1h split is itself made of 6 folds of 10 min splits. The `phone/` directory contains the frame-wise phoneme transcription of the various splits (the IPA phone mappings are in `phone_mapping.json`). There is also the phoneme transcription of the librispeech dev and test sets.  
-
+The 10h split is made by combining the data from the `9h/` and the `1h` directories. The 1h split is itself made of 6 folds of 10 min splits. The `phone/` directory contains the frame-wise phoneme transcription of the various splits (the IPA phone mappings are in `phone_mapping.json`).  It also contains the aligned phoneme transcription of the librispeech dev and test sets (see below).
 
 Alternatively, you can reconstruct this dataset by downloading by hand librispeech and running the scripts in `rebuild_limited_train/`.
 
@@ -76,7 +75,7 @@ These are the standard librispeech dev and test sets. They can be gotten at the 
       wget http://www.openslr.org/resources/12/test-clean.tar.gz
       wget http://www.openslr.org/resources/12/test-other.tar.gz
       
-
+The total is 20h of data (1.2 GB).
 
 ## Regenerate the entire data from scratch
 
