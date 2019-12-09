@@ -25,7 +25,7 @@ to launch downloading in the background, you can type
      wget https://dl.fbaipublicfiles.com/librilight/data/large.tar &
      
 
-The structure of the repos is the same as for librispeech: 
+The structure of the archives is the same as for librispeech: 
 
     dataset_name/speakerID/file_name/
 
