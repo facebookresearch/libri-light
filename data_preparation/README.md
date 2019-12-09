@@ -41,7 +41,7 @@ In `OUTPUT_DIR`, there will be the same structure as above, but each file_name d
 
 ### 2. Get the limited-supervision train data
 
-The limited supervision training sets are built on Librispeech. They consist in 10h, 1h, and 10 minute cuts with orthographic transciptions and aligned phoneme transcriptions, which can be used to train small models or fine-tune pretrained ones. This can be downloaded [here](https://dl.fbaipublicfiles.com/librilight/data/librispeech_finetuning.tgz).
+The limited supervision training sets are built on Librispeech. They consist in 10h, 1h, and 10 minute cuts with orthographic transciptions and aligned phoneme transcriptions, which can be used to train small models or fine-tune pretrained ones. This can be downloaded [here, 0.6 GB](https://dl.fbaipublicfiles.com/librilight/data/librispeech_finetuning.tgz).
 
 The directory structure is the following:
       
