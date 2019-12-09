@@ -1,3 +1,4 @@
+# Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 import pathlib
 from collections import namedtuple
 import torchaudio

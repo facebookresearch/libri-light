@@ -1,3 +1,4 @@
+# Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 UNIQUE_GENRE_FOLDING = {'Religion': ['Religious Fiction', 'Christianity - Biographies', 'Christian Fiction', 'Weymouth New Testament', 'Other religions', 'World English Bible', 'Christianity - Commentary', 'Atheism & Agnosticism', 'Bibles', 'Religion', 'Christianity - Other'],
                         'Poetry': ['Poetry', 'Ballads', 'Antiquity', 'Lyric', 'Anthologies', 'Multi-version (Weekly and Fortnightly poetry)', 'Elegies & Odes', 'Free Verse', 'Sonnets'],
                         'Theater': ['Tragedy', 'Plays', 'Comedy', 'Performing Arts'],
