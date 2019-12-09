@@ -18,13 +18,12 @@ cd ABX_src
 nosetests -d
 ```
 
-Download the `.item` files necessary to run the ABX evaluation  here: 
+Download the Librilight `.item` files necessary to run the ABX evaluation here: [ABX_data.tgz](https://dl.fbaipublicfiles.com/librilight/data/ABX_data.tgz).
 
-- [ABX_data.tgz](https://dl.fbaipublicfiles.com/librilight/data/ABX_data.tgz).
+There are 4 `.item` files constructed from the Librispeech dev and test set: `dev-clean.item`, `dev-other.item`, `test-clean.item`, and `test-other.item`, containing the labels for the ABX evaluation.
 
 ### How to run the ABX evaluation ?
 
-For each evaluation dataset available for Librilight (dev-clean, dev-other, test-clean, test-other) there is a corresponding .item file containing the labels for the ABX evaluation.
 
 Dump your features in .pt (torch), .npz or .npy (numpy) format somewhere. Your features dataset should look like this:
 
@@ -42,7 +41,7 @@ Then run:
 python eval_ABX.py $PATH_FEATURE_DIR  $PATH_TO_ABX_ITEMS/$DB_NAME.item --file_extension $EXTENSION --out $OUTPUT_DIR --feature_size $FEATURE_SIZE
 ```
 
-Where `$DB_NAME` is one of the 4 evaluation datasets from LibriSpeech (dev-clean, dev-other, test-clean, test-other) and 
+Where `$DB_NAME` is one of the 4 evaluation datasets (`dev-clean`, `dev-other`, `test-clean`, `test-other) and 
 `$FEATURE_SIZE` is the duration (in s) of one feature of the model (for a `10ms` frame rate, this would be `0.01`).
 
 
