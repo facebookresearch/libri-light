@@ -130,7 +130,7 @@ Figure 1. Complete data preparation pipeline.
 
 ## Format of Json files
 
-We created one json file per LibriVox audio file. This is different from the LibriVoc distribution that had one json per book and each book could have several files.
+We created one json file per LibriVox audio file. This is different from the LibriVox distribution that had one json per book and each book could have several files.
 
      {
      "speaker" : "960"    # LibriVox speaker ID
