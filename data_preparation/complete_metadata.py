@@ -7,8 +7,8 @@ import metadata_completion.utilities as ut
 from metadata_completion.GenreScrapper import gather_all_genres
 from metadata_completion.ReaderScapper import update_all_speaker_data
 from metadata_completion.genre_folding import UNIQUE_GENRE_FOLDING, \
-                                              SUPER_GENDER_FOLDING, \
-                                              SUPER_GENDER_ORDERING
+    SUPER_GENDER_FOLDING, \
+    SUPER_GENDER_ORDERING
 from metadata_completion.DuplicateSearch import get_books_duplicates
 from metadata_completion.text_cleaner import clean_all_text_data
 
@@ -37,8 +37,8 @@ def main(argv):
         path_out = Path(args.out_dir)
         Path.mkdir(path_out, exist_ok=True)
     else:
-        print(f"You must input either an output directory or activate the "\
-                "inplace flag")
+        print(f"You must input either an output directory or activate the "
+              "inplace flag")
         parser.print_help()
         sys.exit()
 
@@ -73,17 +73,17 @@ def main(argv):
 
     # Convert the "dramatic reading" option into a binary tag
     has_dramatic_reading = [(name, 'Dramatic Readings' in vals)
-                                    for name, vals in genre_list]
+                            for name, vals in genre_list]
     ut.get_updated_metadata(has_dramatic_reading, path_out,
                             path_out, 'Dramatic Readings')
     genre_list = [(name, ut.remove_tag(vals, 'Dramatic Readings', 'Undefined'))
-                        for name, vals in genre_list]
+                  for name, vals in genre_list]
 
     #dramatric_reading = [(name, ut.has_tag(tag_str, tag))]
-    folded_genres = [ (name, ut.remove_multiple_tags(ut.apply_folding('+'.join(vals),
-                                                                      final_reverse_folding),
+    folded_genres = [(name, ut.remove_multiple_tags(ut.apply_folding('+'.join(vals),
+                                                                     final_reverse_folding),
                                                     SUPER_GENDER_ORDERING))
-                        for name, vals in genre_list]
+                     for name, vals in genre_list]
 
     ut.get_updated_metadata(folded_genres, path_out,
                             path_out, "meta_genre")

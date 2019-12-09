@@ -3,18 +3,18 @@ import argparse
 import pathlib
 import random
 
+
 def do_split_10h(records, speakers, max_seconds_per_speaker, min_seconds_per_speaker, total_seconds):
     """
     Greedily selecting speakers, provided we don't go over budget
     """
-    scaler = 1.0 / 16000 # sampling rate
-    speaker2time = get_histogram(records, lambda_key= lambda r: r.speaker.id, 
-                lambda_value=lambda r: r.length * scaler)
+    scaler = 1.0 / 16000  # sampling rate
+    speaker2time = get_histogram(records, lambda_key=lambda r: r.speaker.id,
+                                 lambda_value=lambda r: r.length * scaler)
 
     speakers = set([r.speaker.id for r in records])
     speakers = sorted(speakers)
     random.shuffle(speakers)
-
 
     time_taken = 0.0
     speakers_taken = []
@@ -48,8 +48,9 @@ def get_args():
     args = parser.parse_args()
 
     if args.max_minutes_per_speaker <= 0:
-       args.max_minutes_per_speaker = float('inf') 
+        args.max_minutes_per_speaker = float('inf')
     return args
+
 
 if __name__ == '__main__':
     args = get_args()
@@ -65,17 +66,13 @@ if __name__ == '__main__':
             fname2length = traverse_tree(root)
             records = full_records(speakers, fname2length)
 
-            records = filter(lambda x: x.speaker.gender.lower() == gender, records)
+            records = filter(lambda x: x.speaker.gender.lower()
+                             == gender, records)
             records = list(records)
 
-            records_filtered = do_split_10h(records, speakers, args.max_minutes_per_speaker * 60, args.min_minutes_per_speaker * 60, args.total_minutes * 60)
+            records_filtered = do_split_10h(
+                records, speakers, args.max_minutes_per_speaker * 60, args.min_minutes_per_speaker * 60, args.total_minutes * 60)
             print_stats(records_filtered)
 
             if args.target_dir:
                 materialize(records_filtered, args.target_dir, tag=tag)
-
-
-
-
-
-

@@ -21,7 +21,7 @@ class ReaderScrapper(HTMLParser):
             if ('class', 'page author-page') in attrs:
                 self.inHeader = True
 
-        if tag =="h1" and self.inHeader:
+        if tag == "h1" and self.inHeader:
             self.getData = True
 
     def handle_endtag(self, tag):
@@ -87,7 +87,7 @@ def update_all_speaker_data(listMetadata, pathInDir, pathOutDir):
     bar = progressbar.ProgressBar(maxval=len(listMetadata))
     bar.start()
 
-    idMatch = {None:None}
+    idMatch = {None: None}
 
     for index, pathMetadata in enumerate(listMetadata):
         bar.update(index)

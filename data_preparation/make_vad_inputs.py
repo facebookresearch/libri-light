@@ -42,7 +42,7 @@ def findAllSeqs(dirName,
         print('Could not load cache, rebuilding')
 
     if dirName[-1] != os.sep:
-        dirName+= os.sep
+        dirName += os.sep
     prefixSize = len(dirName)
     speakersTarget = {}
     outSequences = []
@@ -119,7 +119,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Build the vad inputs")
 
     parser.add_argument('path_db', type=str,
-                                help="Path to the dataset directory")
+                        help="Path to the dataset directory")
     parser.add_argument('path_out', type=str)
     parser.add_argument('--ignore_cache', action='store_true')
     parser.add_argument('--debug', action='store_true')

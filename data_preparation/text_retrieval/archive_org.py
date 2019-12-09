@@ -8,7 +8,7 @@ def download_text_data(textID, outDir):
     namesFile = []
     for data in item.files:
         name = data['name']
-        if os.path.splitext(name)[1] ==".txt":
+        if os.path.splitext(name)[1] == ".txt":
             namesFile.append(name)
 
     if len(namesFile) == 0:
@@ -20,7 +20,7 @@ def download_text_data(textID, outDir):
 def get_archive_id(textURL):
 
     indexStart = textURL.find("archive.org/details/") \
-            + len("archive.org/details/")
+        + len("archive.org/details/")
     if indexStart < 0:
         return False
 
@@ -42,11 +42,11 @@ def get_archive_org_text_data(url):
     fullText = ""
     for fileName in fileNames:
         fullPath = os.path.join(tmpDir, os.path.join(ID, fileName))
-        with open(fullPath, 'r', encoding = "ISO-8859-1") as file:
+        with open(fullPath, 'r', encoding="ISO-8859-1") as file:
             data = file.read()
 
         os.remove(fullPath)
-        fullText+= data.replace('\\n', '\n') + '\n'
+        fullText += data.replace('\\n', '\n') + '\n'
 
     return fullText
 
@@ -62,5 +62,5 @@ if __name__ == "__main__":
 
     testID = "completepoetical00byro"
     outDIR = "tmp"
-    fullURL ="https://archive.org/details/slaveryourtimes00tolsiala/page/n8"
+    fullURL = "https://archive.org/details/slaveryourtimes00tolsiala/page/n8"
     print(get_archive_org_text_data(fullURL))

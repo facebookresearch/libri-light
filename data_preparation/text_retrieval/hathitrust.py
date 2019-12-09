@@ -20,7 +20,7 @@ class HathitrustParser(HTMLParser):
                 if name == "href":
                     self.tmpUrl = value
 
-        if tag == "div" and ("id","mdpPage") in attrs:
+        if tag == "div" and ("id", "mdpPage") in attrs:
             self.getNextP = True
 
         if tag == "div" and ("id", "mdpTextEmpty") in attrs:
@@ -39,7 +39,7 @@ class HathitrustParser(HTMLParser):
         if tag == "a":
             self.tmpUrl = None
         elif tag == "div":
-            self.getNextP  = False
+            self.getNextP = False
         elif tag == "p":
             self.getTextData = False
             self.getNextP = False
@@ -130,9 +130,8 @@ def load_hathitrust_book(url):
     return text
 
 
-
 if __name__ == "__main__":
 
     url1 = "https://babel.hathitrust.org/cgi/ssd?id=coo.31924074296884;page=ssd;view=plaintext;seq=110;num=104"
-    url2 ="http://catalog.hathitrust.org/Record/002242980"
+    url2 = "http://catalog.hathitrust.org/Record/002242980"
     print(load_hathitrust_book(url1))

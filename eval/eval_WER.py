@@ -222,7 +222,8 @@ def main(args):
     parser.add_argument('--path_wer',
                         help="For computing the WER on specific sequences",
                         action='append')
-    parser.add_argument('--letters_path', type=str, default='WER_data/letters.lst')
+    parser.add_argument('--letters_path', type=str,
+                        default='WER_data/letters.lst')
 
     args = parser.parse_args(args=args)
 
@@ -255,7 +256,8 @@ def main(args):
     if args.path_train and args.path_val:
         set_seed(args.seed)
 
-        char_labels_val, n_chars, _ = parse_ctc_labels_from_root(args.path_val, letters_path="./WER_data/letters.lst")
+        char_labels_val, n_chars, _ = parse_ctc_labels_from_root(
+            args.path_val, letters_path="./WER_data/letters.lst")
         print(f"Loading the validation dataset at {args.path_val}")
         dataset_val = SingleSequenceDataset(args.path_val, char_labels_val)
         val_loader = DataLoader(dataset_val, batch_size=args.batch_size,

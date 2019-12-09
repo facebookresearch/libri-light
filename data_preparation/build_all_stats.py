@@ -5,7 +5,8 @@ import plot
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(description="Build the statistics on LibriBig")
+    parser = argparse.ArgumentParser(
+        description="Build the statistics on LibriBig")
     parser.add_argument('path_metadata', type=str,
                         help="Path to the directory containing the metadata")
     parser.add_argument('path_wav', type=str,

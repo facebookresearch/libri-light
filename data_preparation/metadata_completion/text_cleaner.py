@@ -1,10 +1,10 @@
+from text_retrieval.guttenberg import is_guttenberg_url
+from .utilities import get_txt_name
 import os
 import json
 import progressbar
 import sys
 sys.path.append('..')
-from .utilities import get_txt_name
-from text_retrieval.guttenberg import is_guttenberg_url
 
 
 def loadData(pathFile):
@@ -42,7 +42,7 @@ def loadData(pathFile):
         indexEndProject = len(data)
 
     startIndex = indexProducedBy + 1 if indexProducedBy > 0 \
-                    else indexStartProject + 1
+        else indexStartProject + 1
     while startIndex < len(data) and data[startIndex] == '\n':
         startIndex += 1
 
@@ -54,7 +54,7 @@ def find404Error(pathFile):
         data = file.readlines()
 
     return len(data) == 1 and \
-                data[0] == "<h1>404 Not Found</h1><p>File not found.</p>"
+        data[0] == "<h1>404 Not Found</h1><p>File not found.</p>"
 
 
 def clean_all_text_data(metadataList, pathInDir, pathOutDir):
@@ -82,7 +82,7 @@ def clean_all_text_data(metadataList, pathInDir, pathOutDir):
 
         if not os.path.isfile(pathInFile):
             status = "missing"
-            nMissing+=1
+            nMissing += 1
         else:
 
             assert(pathInFile != outPathFile)
@@ -97,7 +97,7 @@ def clean_all_text_data(metadataList, pathInDir, pathOutDir):
                 outData = loadData(pathInFile)
 
                 if outData is None:
-                    nNotWorking+=1
+                    nNotWorking += 1
                     if find404Error(pathInFile):
                         emptyTxt.append(pathInFile)
                         status = "missing"
@@ -128,5 +128,5 @@ if __name__ == "__main__":
 
     clean_all_text_data(pathDirData, pathOutData)
 
-     # pathTestFile = "/checkpoint/mriviere/LibriVox/sadhana_realisation_librivox_64kb_mp3_text.txt"
-     # print(find404Error(pathTestFile))
+    # pathTestFile = "/checkpoint/mriviere/LibriVox/sadhana_realisation_librivox_64kb_mp3_text.txt"
+    # print(find404Error(pathTestFile))

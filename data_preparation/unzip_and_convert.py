@@ -34,7 +34,7 @@ def _convert_dir(task):
 
     full_path_in = os.path.join(args.path_in, dir_name)
     files_list = [f for f in os.listdir(full_path_in)
-                    if os.path.splitext(f)[1] in valid_formats]
+                  if os.path.splitext(f)[1] in valid_formats]
 
     full_path_out = os.path.join(args.path_out, dir_name)
     if not os.path.isdir(full_path_out):
@@ -49,7 +49,8 @@ def _convert_dir(task):
         subprocess.run(["ffmpeg", "-i", path_in_file,
                         "-ac", "1",
                         "-ar", str(args.sample_rate), path_out_file],
-                        stdout=subprocess.DEVNULL)
+                       stdout=subprocess.DEVNULL)
+
 
 def convert(args, n_processes=16):
 
@@ -65,6 +66,7 @@ def convert(args, n_processes=16):
 
     pool = multiprocessing.Pool(processes=n_processes)
     pool.map(_convert_dir, [(dir_name, args) for dir_name in dirs_in])
+
 
 if __name__ == "__main__":
 
