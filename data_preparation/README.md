@@ -16,8 +16,15 @@ the data is spit into 3 subsets of increasing lengths (small, medium, large). Th
     
 In addition, we also provide a 4th subset containing potentially duplicated books.
 
-- [ll_unlab_duplicate.tar.gz  ( 4500 hours,  274 GB)](s3://dl.fbaipublicfiles.com/librilight/data/duplicate.tar)
+- [ll_unlab_duplicate.tar.gz  ( 4500 hours,  274 GB)](https://dl.fbaipublicfiles.com/librilight/data/duplicate.tar)
 
+to launch downloading in the background, you can type
+
+     wget https://dl.fbaipublicfiles.com/librilight/data/small.tar &
+     wget https://dl.fbaipublicfiles.com/librilight/data/medium.tar &
+     wget https://dl.fbaipublicfiles.com/librilight/data/large.tar &
+     
+   
 
 ## Do the stats
 
