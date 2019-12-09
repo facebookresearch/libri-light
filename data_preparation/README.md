@@ -26,9 +26,9 @@ The directory structure of the archives is the same as for librispeech:
 
 where `dataset_name` is `small`, `medium`, `large`, or `duplicate`, `speakerID` is the librivox speakerID (a number), and `book_name` the name of the original LibriVox book file. Inside each book directory, you should find a set of `.flac` and corresponding `.json` files. See below for the format  of the `.json` files.
 
-Once the dataset is downloaded and "untarred", into `UNLAB_DIR/` you can check its statistics with the command
+Once the dataset is downloaded and "untarred", say, into `UNLAB_DIR/`, you can check its statistics with the command:
 
-     python build_all_stats.py UNLAB_DIR UNLAB_DIR OUTPUT_DIR
+     python build_all_stats.py UNLAB_DIR OUTPUT_DIR
      
 This will construct in `OUTPUT_DIR` two .png files (plus .json files in a .cache directory)
 
