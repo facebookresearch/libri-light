@@ -105,7 +105,7 @@ python unzip_and_convert.py unzip $OUTPUT_DOWNLOAD -o $OUTPUT_MP3
 
 And convert them from .mp3 to flac:
 ```console
-python unzip_and_convert.py unzip $OUTPUT_MP3 -o $OUTPUT_FLAC -f .flac
+python unzip_and_convert.py convert $OUTPUT_MP3 -o $OUTPUT_FLAC -f .flac
 ```
 
 To extract the VAD, run: 
