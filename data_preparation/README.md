@@ -12,13 +12,19 @@ meta-data construction, and dataset filtering and splitting.
 
 The unlabelled data is spit into 3 subsets of increasing lengths (small, medium, large). These splits are done to enable doing experiments on smaller amounts of data (also, downloading the large dataset can take about one day). 
 
--  [unlab_small.tar  (577 hours, 35 GB)](https://dl.fbaipublicfiles.com/librilight/data/unlab_small.tar)   
--  [unlab_medium.tar (5193 hours, 321 GB)](https://dl.fbaipublicfiles.com/librilight/data/unlab_medium.tar) 
--  [unlab_large.tar  (51934 hours, 3.05 TB)](https://dl.fbaipublicfiles.com/librilight/data/large.tar)
+-  [small.tar  (577 hours, 35 GB)](https://dl.fbaipublicfiles.com/librilight/data/small.tar)   
+-  [medium.tar (5193 hours, 321 GB)](https://dl.fbaipublicfiles.com/librilight/data/medium.tar) 
+-  [large.tar  (51934 hours, 3.05 TB)](https://dl.fbaipublicfiles.com/librilight/data/large.tar)
     
-In addition, we also provide a 4th subset containing potentially duplicated books.
+In addition, we also provide a 4th subset containing potentially duplicated books. 
 
 - [unlab_duplicate.tar.gz  (4500 hours, 274 GB)](https://dl.fbaipublicfiles.com/librilight/data/duplicate.tar)
+
+By combining these subsets, you can construct the 3 splits described in the Libri-light paper:
+
+- unlab-58K  : small+medium+large
+- unlab-5.8K : small+medium
+- unlab-580  : small
 
 The directory structure of the archives is the same as for librispeech: 
 
