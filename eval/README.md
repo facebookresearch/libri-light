@@ -4,7 +4,7 @@ You will find here all relevant evaluation launched on the LibriLight-dataset.
 
 ## ABX
 
-ABX is an evaluation metric for unsupervised representation learning. It evaluates feature files based on its ability to distinguish sounds like /i/ and /e/ as in "bit" versus "bet". 
+ABX is an evaluation metric for unsupervised representation learning. It evaluates feature files based on its ability to distinguish sounds like /i/ and /e/ as in "bit" versus "bet".
 
 ### Setup
 
@@ -45,7 +45,7 @@ Then run:
 python eval_ABX.py $PATH_FEATURE_DIR  $PATH_TO_ABX_ITEMS/$DB_NAME.item --file_extension $EXTENSION --out $OUTPUT_DIR --feature_size $FEATURE_SIZE
 ```
 
-Where `$DB_NAME` is one of the 4 evaluation datasets (`dev-clean`, `dev-other`, `test-clean`, `test-other) and 
+Where `$DB_NAME` is one of the 4 evaluation datasets (`dev-clean`, `dev-other`, `test-clean`, `test-other) and
 `$FEATURE_SIZE` is the duration (in s) of one feature of the model (for a `10ms` frame rate, this would be `0.01`).
 
 
@@ -66,7 +66,7 @@ Where $EXTENSION corresponds to an audio foramt (.wav, .flac ...)
 
 ## Linear Classification PER
 
-Representations can also be evaluated by how easy it is to train a linear phoneme classifier. 
+Representations can also be evaluated by how easy it is to train a linear phoneme classifier.
 
 ### Setup
 
@@ -75,11 +75,14 @@ To setup the PER evaluation script you need to compile the cython code it relies
 cd PER_src
 python setup.py build_ext --inplace
 ```
+
+You will also need to download the [10h labelled data](https://dl.fbaipublicfiles.com/librilight/data/librispeech_finetuning.tgz).
+
 ### How to run the PER evaluation ?
 
-First you need to train a linear classifier on your features. Just run:
+First you need to train a linear classifier on your features. For example, if you want to evaluate a model fine-tuned on the 10h dataset, just run:
 ```console
-python eval_PER.py train
+python eval_PER.py train $PATH_TO_10h_AUDIO_DATA_DIR $PATH_TO_10h_PHONE_DATA $PATH_TO_THE_JSON_PHONE_CONVERTER $PATH_TO_THE_CPC_MODEL -o $PATH_OUT
 ```
 
 Then you can run the PER computation, for example on librispeech100/test-clean:
@@ -102,7 +105,7 @@ We provide here a test of representations based on word error rate.
 
 Training a letter classifier on top of a pre-trained CPC model:
 ```console
-python eval_WER.py --path_train=$PATH_FINETUNING --path_val=$PATH_TO_DEV_CLEAN --path_checkpoint=$PATH_OUT/checkpoint.pt --lr=1e-3  --n_epochs=50 --p_dropout=0.1 --output=$OUTPUT_DIR 
+python eval_WER.py --path_train=$PATH_FINETUNING --path_val=$PATH_TO_DEV_CLEAN --path_checkpoint=$PATH_OUT/checkpoint.pt --lr=1e-3  --n_epochs=50 --p_dropout=0.1 --output=$OUTPUT_DIR
 
 ```
 Evaluating it with wav2letter decoder:
@@ -114,5 +117,3 @@ You can also train and evaluate afterwards, in a single command:
 ```console
 python eval_WER.py --path_train=$PATH_FINETUNING --path_val=$PATH_TO_DEV_CLEAN --path_checkpoint=$PATH_OUT/checkpoint.pt --lr=1e-3  --n_epochs=50 --p_dropout=0.1 --output=$OUTPUT_DIR --path_wer=$PATH_TO_TEST_CLEAN
 ```
-
-
