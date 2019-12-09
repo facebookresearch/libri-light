@@ -28,6 +28,8 @@ Optimal decoding parameters of each model. You can use wav2letter decoder to
 - Get optimal WER
 - Generate pseudo-labels. 
 
+We use the official Librispeech 4-gram LM, which can be downloaded from [here](http://www.openslr.org/11/), in all the decoding experiments. 
+
 Sample command:
 ```sh
 </path/to/your>/wav2letter/build/Decode \
