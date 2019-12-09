@@ -1,3 +1,4 @@
+# Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 from .archive_org import is_archive_org_url, get_archive_org_text_data
 from .main_lesson import is_main_lesson_url, get_all_text_from_main_lesson
 from .hathitrust import is_hathitrust_url, load_hathitrust_book

@@ -1,3 +1,4 @@
+# Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 import requests
 import urllib.request
 from html.parser import HTMLParser

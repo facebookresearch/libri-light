@@ -1,3 +1,4 @@
+# Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 import argparse
 from pathlib import Path
 import metadata_completion.utilities as ut

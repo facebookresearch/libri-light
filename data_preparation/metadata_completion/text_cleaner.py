@@ -1,3 +1,4 @@
+# Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 from text_retrieval.guttenberg import is_guttenberg_url
 from .utilities import get_txt_name
 import os

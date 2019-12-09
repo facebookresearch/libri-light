@@ -1,3 +1,4 @@
+# Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 import unittest
 from nose.tools import eq_, ok_
 import numpy as np

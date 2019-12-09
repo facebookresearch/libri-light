@@ -1,3 +1,4 @@
+# Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
 from utils import get_histogram, get_speakers, traverse_tree, full_records, print_stats, materialize
 import pathlib
 import argparse
