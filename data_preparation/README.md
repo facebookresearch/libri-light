@@ -26,10 +26,11 @@ The directory structure of the archives is the same as for librispeech:
 
 where dataset_name is small, medium, large, or duplicate, speakerID is the librivox speakerID (a number), and file_name the name of the original LibriVox audio file. Inside each directory, you should find a .flac and a .json. See below for the structure of the .json file.
 
-Once the dataset is downloaded and "untarred", you can check its statistics with the command
+Once the dataset is downloaded and "untarred", into unlab_data/ you can check its statistics with the command
 
-     python build_all_stats.py unlab_data unlab_data unlab_stats
+     python build_all_stats.py unlab_data/ unlab_data/ unlab_stats/
      
+You'll find two png and a .json file
 
 ### 2. The limited supervision train data
 
