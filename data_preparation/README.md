@@ -22,8 +22,8 @@ In addition, we also provide a 4th subset containing potentially duplicated book
 
 By combining these subsets, you can construct the 3 splits described in the Libri-light paper:
 
-- unlab-58K  : small+medium+large
-- unlab-5.8K : small+medium
+- unlab-58k  : small+medium+large
+- unlab-5.8k : small+medium
 - unlab-580  : small
 
 The directory structure of the archives is the same as for librispeech: 
