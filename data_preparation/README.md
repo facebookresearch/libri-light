@@ -10,7 +10,7 @@ meta-data construction, and dataset filtering and splitting.
 
 ### 1. Get and prepare the unlabelled data
 
-The unlabelled data is spit into 3 subsets of increasing lengths (small, medium, large). These splits are done to enable doing experiments on smaller amounts of data (also, downloading the large dataset can take about one day).
+*Download.* The unlabelled data is spit into 3 subsets of increasing lengths (small, medium, large). These splits are done to enable doing experiments on smaller amounts of data (also, downloading the large dataset can take about one day).
 
 -  [small.tar  (577 hours, 35 GB)](https://dl.fbaipublicfiles.com/librilight/data/small.tar)   
 -  [medium.tar (5193 hours, 321 GB)](https://dl.fbaipublicfiles.com/librilight/data/medium.tar)
@@ -20,26 +20,27 @@ In addition, we also provide a 4th subset containing potentially duplicated book
 
 - [unlab_duplicate.tar.gz  (4500 hours, 274 GB)](https://dl.fbaipublicfiles.com/librilight/data/duplicate.tar)
 
-By combining these subsets, you can construct the 3 splits described in the Libri-light paper:
-
-- unlab-58k  : small+medium+large
-- unlab-5.8k : small+medium
-- unlab-580  : small
-
 The directory structure of the archives is the same as for librispeech:
 
     dataset_name/speakerID/book_name/
 
 where `dataset_name` is `small`, `medium`, `large`, or `duplicate`, `speakerID` is the librivox speakerID (a number), and `book_name` the name of the original LibriVox audiobook file. Inside each directory, you should find a set of `.flac` and `.json` files. See below for the format  of the `.json` files.
 
-Once the dataset is downloaded and "untarred", into `UNLAB_DIR` you can check its statistics with the command
+By combining these subsets, you can construct the 3 splits described in the Libri-light paper:
+
+- *unlab-58k*  : small+medium+large
+- *unlab-5.8k* : small+medium
+- *unlab-580*  : small
+
+
+Once the dataset is downloaded, "untarred" and organised into a directory `UNLAB_DIR` you can check its statistics with the command:
 
 ```console
     python build_all_stats.py UNLAB_DIR OUTPUT_DIR
 ```
 This will construct in `OUTPUT_DIR` two .png files (plus .json files in a .cache directory)
 
-Each file may be rather long and may not fit into memory.  As a final step, we provide a script to cut the files into roughly 60sec sequences obtained by concatenating consecutive voice activity chunks.
+*Segment.* Each file may be rather long and may not fit into memory.  As a final step, we provide a script to segment the files into roughly 60sec sequences obtained by concatenating consecutive voice activity chunks.
 
 ```console
     python cut_by_vad.py --input_dir INPUT_DIR --output_dir OUTPUT_DIR
