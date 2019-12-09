@@ -4,16 +4,16 @@ import numpy as np
 import json
 import multiprocessing
 import argparse
+import tqdm
 
-
-def save(seq, fname, index):
+def save(seq, fname, index, extension):
     output = np.hstack(seq)
-    file_name = fname.parent / (fname.stem + f"_{index:04}.wav")
+    file_name = fname.parent / (fname.stem + f"_{index:04}{extension}")
     fname.parent.mkdir(exist_ok=True, parents=True)
     sf.write(file_name, output, samplerate=16000)
 
 
-def cut_sequence(path, vad, path_out, target_len_sec):
+def cut_sequence(path, vad, path_out, target_len_sec, out_extension):
     data, samplerate = sf.read(path)
 
     assert len(data.shape) == 1
@@ -30,7 +30,7 @@ def cut_sequence(path, vad, path_out, target_len_sec):
 
         # if a slice is longer than target_len_sec, we put it entirely in it's own piece
         if length_accumulated + (end - start) > target_len_sec and length_accumulated > 0:
-            save(to_stitch, path_out, i)
+            save(to_stitch, path_out, i, out_extension)
             to_stitch = []
             i += 1
             length_accumulated = 0
@@ -39,11 +39,11 @@ def cut_sequence(path, vad, path_out, target_len_sec):
         length_accumulated += end - start
 
     if to_stitch:
-        save(to_stitch, path_out, i)
+        save(to_stitch, path_out, i, out_extension)
 
 
 def cut_book(task):
-    path_book, root_out, target_len_sec = task
+    path_book, root_out, target_len_sec, extension = task
 
     speaker = pathlib.Path(path_book.parent.name)
 
@@ -56,13 +56,14 @@ def cut_book(task):
         sound_file = meta_file_path.parent / (meta_file_path.stem + '.flac')
 
         path_out = root_out / speaker / book_id / (meta_file_path.stem)
-        cut_sequence(sound_file, vad, path_out, target_len_sec)
+        cut_sequence(sound_file, vad, path_out, target_len_sec, extension)
 
 
 def cut(input_dir,
         output_dir,
         target_len_sec=30,
-        n_process=32):
+        n_process=32,
+        out_extension='.flac'):
 
     list_dir = pathlib.Path(input_dir).glob('*/*')
     list_dir = [x for x in list_dir if x.is_dir()]
@@ -70,10 +71,11 @@ def cut(input_dir,
     print(f"{len(list_dir)} directories detected")
     print(f"Launching {n_process} processes")
 
-    pool = multiprocessing.Pool(processes=n_process)
-    tasks = [(path_book, output_dir, target_len_sec) for path_book in list_dir]
+    tasks = [(path_book, output_dir, target_len_sec, out_extension) for path_book in list_dir]
 
-    pool.map(cut_book, tasks)
+    with multiprocessing.Pool(processes=n_process) as pool:
+        for _ in tqdm.tqdm(pool.imap_unordered(cut_book, tasks), total = len(tasks)):
+            pass
 
 
 def parse_args():
@@ -90,6 +92,10 @@ def parse_args():
                              "(default is 60)")
     parser.add_argument('--n_workers', type=int, default=32,
                         help="Number of parallel worker processes")
+    parser.add_argument('--out_extension', type=str, default=".flac",
+                        choices=[".wav", ".flac", ".mp3"],
+                        help="Output extension")
+
 
     return parser.parse_args()
 
@@ -98,4 +104,5 @@ if __name__ == "__main__":
     args = parse_args()
     pathlib.Path(args.output_dir).mkdir(exist_ok=True, parents=True)
 
-    cut(args.input_dir, args.output_dir, args.target_len_sec, args.n_workers)
+    cut(args.input_dir, args.output_dir, args.target_len_sec,
+        args.n_workers, args.out_extension)
