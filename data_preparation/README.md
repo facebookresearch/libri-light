@@ -8,7 +8,7 @@ meta-data construction, and dataset filtering and splitting.
 
 ## Download the data
 
-the data is spit into 3 subsets of increasing lengths (small, medium, large). These splits are done to enable doing experiments on smaller amounts of data (also, downloading the large dataset can take about one day). 
+The unlabelled data is spit into 3 subsets of increasing lengths (small, medium, large). These splits are done to enable doing experiments on smaller amounts of data (also, downloading the large dataset can take about one day). 
 
 -  [unlab_small.tar  (  577 hours,  35 GB, 1135)](https://dl.fbaipublicfiles.com/librilight/data/unlab_small.tar)   
 -  [unlab_medium.tar ( 5193 hours, 321 GB)](https://dl.fbaipublicfiles.com/librilight/data/unlab_medium.tar) 
@@ -20,10 +20,11 @@ In addition, we also provide a 4th subset containing potentially duplicated book
 
 to launch downloading in the background, you can type
 
+     mkdir unlab_data   # create a data directory
+     cd unlab_data
      wget https://dl.fbaipublicfiles.com/librilight/data/small.tar &
      wget https://dl.fbaipublicfiles.com/librilight/data/medium.tar &
      wget https://dl.fbaipublicfiles.com/librilight/data/large.tar &
-     
 
 The directory structure of the archives is the same as for librispeech: 
 
@@ -32,6 +33,11 @@ The directory structure of the archives is the same as for librispeech:
 where dataset_name is small, medium, large, or duplicate, speakerID is the librivox speakerID (a number), and file_name the name of the original LibriVox audio file. Inside each directory, you should find a .flac and a .json. See below for the structure of the .json file.
 
 
+Once the dataset is downloaded and "untarred", you can check its statistics with the command
+
+     python build_all_stats.py unlab_data unlab_data unlab_stats
+     
+     
 ## Do the stats
 
 
