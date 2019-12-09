@@ -4,6 +4,8 @@ You will find here all relevant evaluation launched on the LibriLight-dataset.
 
 ## ABX
 
+ABX is an evaluation metric for unsupervised representation learning. It evaluates feature files based on its ability to distinguish sounds like /i/ and /e/ as in "bit" versus "bet". 
+
 ### Setup
 
 To setup the ABX evaluation script you need to:
@@ -62,7 +64,9 @@ python eval_ABX.py $PATH_AUDIO_DIR  ABX_data/$DB_NAME.item --file_extension $EXT
 
 Where $EXTENSION corresponds to an audio foramt (.wav, .flac ...)
 
-## PER
+## Linear Classification PER
+
+Representations can also be evaluated by how easy it is to train a linear phoneme classifier. 
 
 ### Setup
 
@@ -85,6 +89,8 @@ python eval_PER.py per $PATH_OUT/checkpoint.pt $PATH_TO_TEST_CLEAN $PATH_TO_TEST
 
 
 ## WER
+
+We provide here a test of representations based on word error rate.
 
 ### Setup
 * wav2letter python bindings: [(how-to)](https://github.com/facebookresearch/wav2letter/tree/master/bindings/python).
