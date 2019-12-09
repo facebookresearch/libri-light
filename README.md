@@ -12,7 +12,7 @@ This repo contains code associated with the Libri-light dataset which can be dow
 To install:
 
      git clone https://github.com/facebookresearch/libri-light
-     
+
 
 
 ## Goals and structure
@@ -20,9 +20,9 @@ To install:
 Libri-light offers 60+ k hours of unlabelled speech, a small training set for limited supervision (10h, 1h or 10 minutes of labelled speech), and a common set of metrics to evaluated three settings:
 
   1. the unsupervised/zero-resource setting. Here, models are trained only on unlabelleds speech and attempt to construct 'good' speech representations. They are evaluated with the ABX metric.
-  2. the semi-supervised setting. Here, models are trained with the limited supervision dataset and exploit the unlabelled in various ways (as pretraining, to get pseudo-labels, etc). The models are evaluated using either PER or WER. 
+  2. the semi-supervised setting. Here, models are trained with the limited supervision dataset and exploit the unlabelled in various ways (as pretraining, to get pseudo-labels, etc). The models are evaluated using either PER or WER.
   3. the distant supervision setting. Here, models can use additional unaligned text to build a decoder. These models are evaluated using WER.
-  
+
 
 
 ## Documentation
@@ -48,4 +48,3 @@ Libri-light offers 60+ k hours of unlabelled speech, a small training set for li
 ## License
 
 The Libri-light code is released under the MIT license. See LICENSE for additional details.
-
