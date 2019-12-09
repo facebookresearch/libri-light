@@ -8,7 +8,7 @@ meta-data construction, and dataset filtering and splitting.
 
 ## Download the data
 
-the data is spit into 3 subsets of increasing lengths (small, medium, large). The subsets are included into one another, which means that if you download medium you don't need to download small, and if you download large, you don't needs to download medium. These splits are done to enable doing experiments on smaller amounts of data. 
+the data is spit into 3 subsets of increasing lengths (small, medium, large). These splits are done to enable doing experiments on smaller amounts of data (also, downloading the large dataset can take about one day). 
 
 -  [ll_unlab_small.tar.gz  (  577 hours,  35 GB)](https://dl.fbaipublicfiles.com/librilight/data/small.tar)   
 -  [ll_unlab_medium.tar.gz ( 5193 hours, 321 GB)](https://dl.fbaipublicfiles.com/librilight/data/medium.tar) 
