@@ -6,24 +6,26 @@ You will find here all relevant evaluation launched on the LibriLight-dataset.
 
 ### Setup
 
-To setup the ABX evaluation script you need to compile the cython code it relies on. Just do:
+To setup the ABX evaluation script you need to:
+
+1. compile the cython code. Just do:
+
 ```console
 cd ABX_src
 python setup.py build_ext --inplace
 ```
 
-Checkout that everything works properly with:
+2. Check that everything works properly with:
 ```console
 cd ABX_src
 nosetests -d
 ```
 
-Download the Librilight `.item` files necessary to run the ABX evaluation here: [ABX_data.tgz](https://dl.fbaipublicfiles.com/librilight/data/ABX_data.tgz).
+3. Download the Librilight `.item` files here: [ABX_data.tgz](https://dl.fbaipublicfiles.com/librilight/data/ABX_data.tgz).
 
-There are 4 `.item` files constructed from the Librispeech dev and test set: `dev-clean.item`, `dev-other.item`, `test-clean.item`, and `test-other.item`, containing the labels for the ABX evaluation.
+This archive contains four `.item` files constructed from the Librispeech dev and test set: `dev-clean.item`, `dev-other.item`, `test-clean.item`, and `test-other.item`, which provide the labels for the ABX evaluation.
 
 ### How to run the ABX evaluation ?
-
 
 Dump your features in .pt (torch), .npz or .npy (numpy) format somewhere. Your features dataset should look like this:
 
