@@ -24,13 +24,18 @@ The directory structure of the archives is the same as for librispeech:
 
     dataset_name/speakerID/file_name/
 
-where dataset_name is small, medium, large, or duplicate, speakerID is the librivox speakerID (a number), and file_name the name of the original LibriVox audio file. Inside each directory, you should find a .flac and a .json. See below for the structure of the .json file.
+where dataset_name is small, medium, large, or duplicate, speakerID is the librivox speakerID (a number), and file_name the name of the original LibriVox audio file. Inside each directory, you should find a .flac and a .json. See below for the format  of the .json files.
 
 Once the dataset is downloaded and "untarred", into unlab_data/ you can check its statistics with the command
 
      python build_all_stats.py unlab_data/ unlab_data/ unlab_stats/
      
-You'll find two png and a .json file
+This will construct two png and a .json file
+
+Each file may be rather long and may not fit into memory.  As a final step, we provide a script to cut the files into roughly 60sec sequences obtained by concatenating consecutive voice activity chunks.
+
+     python cut_by_vad.py
+
 
 ### 2. The limited supervision train data
 
@@ -68,7 +73,7 @@ We also provide scripts for preparing the raw dataset into useable segments for 
 ![pipeline](data_preparation_pipeline.svg)
 
 
-## Json file
+## Format of Json files
 
 We created one json file per LibriVox audio file. This is different from the LibriVoc distribution that had one json per book and each book could have several files. 
 
