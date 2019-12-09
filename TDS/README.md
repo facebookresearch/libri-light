@@ -14,9 +14,23 @@ This repository provides codes to reproduce TDS baselines in the paper. You shou
 
 ### Configurations
 #### Acoustic model
-Acoustic model training config files for each set-up.
+Acoustic model training config files for each set-up. Note that the 20-millioin-parameter TDS models are trained on 8 GPUs each, while the 37-millioin-parameter ones are on 64 GPUs. See [tutorials](https://github.com/facebookresearch/wav2letter/blob/master/docs/train.md#distributed) about how to run distributed training. 
+
+Sample command:
+```sh
+</path/to/your>/wav2letter/build/Train \
+--flagsfile=</path/to/your>/libri-light/TDS/experiments/config/acoustic_model/10h+pseudo-label_letter_37M_TDS.cfg \
+--enable_distributed=true
+```
 
 #### Decoding
 Optimal decoding parameters of each model. You can use wav2letter decoder to 
 - Get optimal WER
 - Generate pseudo-labels. 
+
+Sample command:
+```sh
+</path/to/your>/wav2letter/build/Train \
+--flagsfile=</path/to/your>/libri-light/TDS/experiments/config/decoding/10h+pseudo-label_letter_37M_TDS.cfg \
+--sclite=</path/to/your/output_folder>
+```
