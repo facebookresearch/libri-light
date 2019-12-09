@@ -30,7 +30,7 @@ Optimal decoding parameters of each model. You can use wav2letter decoder to
 
 Sample command:
 ```sh
-</path/to/your>/wav2letter/build/Train \
+</path/to/your>/wav2letter/build/Decode \
 --flagsfile=</path/to/your>/libri-light/TDS/experiments/config/decoding/10h+pseudo-label_letter_37M_TDS.cfg \
 --sclite=</path/to/your/output_folder>
 ```
