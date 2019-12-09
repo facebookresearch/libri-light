@@ -18,7 +18,7 @@ meta-data construction, and dataset filtering and splitting.
 
 In addition, we also provide a 4th subset containing potentially duplicated books.
 
-- [unlab_duplicate.tar.gz  (4500 hours, 274 GB)](https://dl.fbaipublicfiles.com/librilight/data/duplicate.tar)
+- [unlab_duplicate.tar  (4500 hours, 274 GB)](https://dl.fbaipublicfiles.com/librilight/data/duplicate.tar)
 
 The directory structure of the archives is the same as for librispeech:
 
@@ -43,7 +43,7 @@ This will construct in `OUTPUT_DIR` two .png files (plus .json files in a .cache
 **1.B Segment.** Each file may be rather long and may not fit into memory.  As a final step, we provide a script to segment the files into roughly 60sec sequences obtained by concatenating consecutive voice activity chunks.
 
 ```console
-    python segment_w_VAD.py --input_dir INPUT_DIR --output_dir OUTPUT_DIR
+    python cut_by_vad.py --input_dir INPUT_DIR --output_dir OUTPUT_DIR
 ```
 
 In `OUTPUT_DIR`, there will be the same structure as above, but each file_name directory will have a list of smaller files (`.flac`). You can change this step as fits your model. 
