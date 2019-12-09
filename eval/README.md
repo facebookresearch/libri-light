@@ -18,7 +18,9 @@ cd ABX_src
 nosetests -d
 ```
 
-Download the `.item` files necessary to run the ABX evaluation [here](s3://dl.fbaipublicfiles.com/librilight/data/ABX_data.tgz).
+Download the `.item` files necessary to run the ABX evaluation  here: 
+
+- [ABX_data.tgz](https://dl.fbaipublicfiles.com/librilight/data/ABX_data.tgz).
 
 ### How to run the ABX evaluation ?
 
