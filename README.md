@@ -6,7 +6,6 @@ This repo contains code associated with the Libri-light dataset which can be dow
 
     data_preparation/         # dowload code; VAD and SNR code; json generation; stats; data segmentation
     eval/                     # ABX, PER, WER (evaluation metrics on dev-clean, dev-other, test-clean, test-other)
-    CPC/                      # code, pretrained models, examples
     TDS/                      # code, pretrained models, examples
 
 To install:
@@ -24,11 +23,12 @@ Libri-light offers 60+ k hours of unlabelled speech, a small training set for li
   3. the distant supervision setting. Here, models can use additional unaligned text to build a decoder. These models are evaluated using WER.
 
 
-
 ## Documentation
 
+To use librilight, first go in `data_preparation/` and follow the instructions in the section "Download the data".
+You can then go in `eval/` and run ABX, PER and WER evaluations on pretrained CPC models. 
+Finally, you'll find in `TDS` the wav2letter experiments described in the paper.
 
-## Basic Example
 
 
 
