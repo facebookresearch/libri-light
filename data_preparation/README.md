@@ -36,14 +36,14 @@ By combining these subsets, you can construct the 3 splits described in the Libr
 Once the dataset is downloaded, "untarred" and organised into a directory `UNLAB_DIR` you can check its statistics with the command:
 
 ```console
-    python build_all_stats.py UNLAB_DIR OUTPUT_DIR
+    python get_stats.py UNLAB_DIR OUTPUT_DIR
 ```
 This will construct in `OUTPUT_DIR` two .png files (plus .json files in a .cache directory)
 
 **Segment.** Each file may be rather long and may not fit into memory.  As a final step, we provide a script to segment the files into roughly 60sec sequences obtained by concatenating consecutive voice activity chunks.
 
 ```console
-    python cut_by_vad.py --input_dir INPUT_DIR --output_dir OUTPUT_DIR
+    python segment_w_VAD.py --input_dir INPUT_DIR --output_dir OUTPUT_DIR
 ```
 
 In `OUTPUT_DIR`, there will be the same structure as above, but each file_name directory will have a list of smaller files (`.flac`). You can change this step as fits your model. 
