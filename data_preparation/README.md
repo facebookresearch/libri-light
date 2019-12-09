@@ -28,9 +28,9 @@ where dataset_name is small, medium, large, or duplicate, speakerID is the libri
 
 Once the dataset is downloaded and "untarred", into unlab_data/ you can check its statistics with the command
 
-     python build_all_stats.py unlab_data/ unlab_data/ unlab_stats/
+     python build_all_stats.py unlab_data/ unlab_data/ OUTPUT_DIR
      
-This will construct two png and a .json file
+This will construct two .png files (plus .json files in a .cache directory)
 
 Each file may be rather long and may not fit into memory.  As a final step, we provide a script to cut the files into roughly 60sec sequences obtained by concatenating consecutive voice activity chunks.
 
@@ -49,7 +49,7 @@ The limited supervision rests on librispeech. If you do not already have it, you
 
 Then run the following script:
 
-       make_limited_train/split train-clean-100 train-other-500
+       make_limited_train/split.sh train-clean-100 train-other-500
 
 ### 3. Get the dev and test sets (for evaluation) 
 
