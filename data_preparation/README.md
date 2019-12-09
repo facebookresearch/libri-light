@@ -8,7 +8,7 @@ meta-data construction, and dataset filtering and splitting.
 
 ## Download the data
 
-### 1. The unlabelled data
+### 1. Get and prepare the unlabelled data
 
 The unlabelled data is spit into 3 subsets of increasing lengths (small, medium, large). These splits are done to enable doing experiments on smaller amounts of data (also, downloading the large dataset can take about one day). 
 
@@ -61,14 +61,15 @@ These are the standard librispeech dev and test sets. They can be gotten at the 
       wget http://www.openslr.org/resources/12/test-other.tar.gz
       
 
-## Cut the data into segments
-
-
-We also provide scripts for preparing the raw dataset into useable segments for model training (segmentation).
-
-
 
 ## Regenerate the entire data from scratch
+
+We provide scripts that would completely regenerate the raw data from the librivox repository. 
+
+
+       download_librivox.py   # downloads the English audio books data
+       unzip_and_convert.py   # unzip the archives and convert into flac
+       
 
 ![pipeline](data_preparation_pipeline.svg)
 
