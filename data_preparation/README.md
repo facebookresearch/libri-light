@@ -25,7 +25,12 @@ to launch downloading in the background, you can type
      wget https://dl.fbaipublicfiles.com/librilight/data/large.tar &
      
 
-The structure of the repos are 
+The structure of the repos is the same as for librispeech: 
+
+    dataset_name/speakerID/file_name/
+
+where dataset_name is small, medium, large, or duplicate, speakerID is the librivox speakerID (a number), and file_name the name of the original LibriVox audio file. Inside each directory, you should find a .flac and a .json. See below for the structure of the .json file.
+
 
 ## Do the stats
 
@@ -41,3 +46,29 @@ We also provide scripts for preparing the raw dataset into useable segments for 
 ## Regenerate the entire data from scratch
 
 ![pipeline](data_preparation_pipeline.svg)
+
+
+## Json file
+
+We created one json file per LibriVox audio file. This is different from the LibriVoc distribution that had one json per book and each book could have several files. 
+
+     { 
+     "speaker" : "960"    # LibriVox speaker ID
+     "book_meta": {       # a bunch of LibriVox metadata concerning the book relevant to that file
+       "id":  319                    # LibriVox book ID 
+       "title": "History of Holland" # LibriVox book title
+       ...                        
+       "genre": [                    # LibriVox genre
+        "*Non-fiction",
+        "History"
+         ],                          # from this point, this is our own-libri-light metadata:
+       "Dramatic Readings": false,   # boolean for dramatic vs normal reading
+       "meta_genre" : "Literature"   # meta-genre among, 7 possibilities 
+        },                           # ["Literature", "Science, Craft & Essay", "Undefined", "Religion", "Poetry", "Theater", "Ancien"] 
+     "snr": 5.391,                   # Signal to Noise Ratio computed on the basis of Voice Activity Detection
+     "voice_activity": [             # onsets and offsets (in seconds) of each VAD segments
+      [
+       0.4,
+       12.32
+       ],
+       ...
