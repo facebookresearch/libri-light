@@ -10,9 +10,9 @@ meta-data construction, and dataset filtering and splitting.
 
 the data is spit into 3 subsets of increasing lengths (small, medium, large). These splits are done to enable doing experiments on smaller amounts of data (also, downloading the large dataset can take about one day). 
 
--  [unlab_small.tar.gz  (  577 hours,  35 GB)](https://dl.fbaipublicfiles.com/librilight/data/small.tar)   
--  [unlab_medium.tar.gz ( 5193 hours, 321 GB)](https://dl.fbaipublicfiles.com/librilight/data/medium.tar) 
--  [unlab_large.tar.gz  (51934 hours, 3.05 TB)](https://dl.fbaipublicfiles.com/librilight/data/large.tar)
+-  [unlab_small.tar  (  577 hours,  35 GB, 1135)](https://dl.fbaipublicfiles.com/librilight/data/unlab_small.tar)   
+-  [unlab_medium.tar ( 5193 hours, 321 GB)](https://dl.fbaipublicfiles.com/librilight/data/unlab_medium.tar) 
+-  [unlab_large.tar  (51934 hours, 3.05 TB)](https://dl.fbaipublicfiles.com/librilight/data/large.tar)
     
 In addition, we also provide a 4th subset containing potentially duplicated books.
 
@@ -24,7 +24,8 @@ to launch downloading in the background, you can type
      wget https://dl.fbaipublicfiles.com/librilight/data/medium.tar &
      wget https://dl.fbaipublicfiles.com/librilight/data/large.tar &
      
-   
+
+The structure of the repos are 
 
 ## Do the stats
 
