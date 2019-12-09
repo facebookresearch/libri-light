@@ -238,11 +238,13 @@ class FeatureModule(torch.nn.Module):
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Download model')
-    parser.add_argument('model_name', type=str, choices=["600h", "60kh"])
+    parser.add_argument('model_name', type=str,
+                        choices=["600h", "6kh", "60kh"])
     parser.add_argument('output', type=str)
     args = parser.parse_args()
 
     CPC_MODELS_NAMES = {"60kh": "60k_epoch4-d0f474de.pt",
-                        "600h": "600h-bdd7ced6.pt"}
+                        "600h": "600h-bdd7ced6.pt",
+                        "6kh":"6k_epoch30-9df0493c.pt"}
     state_dict = download_state_dict(CPC_MODELS_NAMES[args.model_name])
     torch.save(state_dict, args.output)
