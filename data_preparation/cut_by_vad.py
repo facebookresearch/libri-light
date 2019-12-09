@@ -20,13 +20,12 @@ def cut_sequence(pathSeq, vad, path_out, target_len_sec):
     assert samplerate == 16000
 
     to_stitch = []
-    scaler = 16000
     length_accumulated = 0.0
 
     i = 0
     for start, end in vad:
-        start_index = int(start * scaler)
-        end_index = int(end * scaler)
+        start_index = int(start * samplerate)
+        end_index = int(end * samplerate)
         slice = data[start_index:end_index]
 
         # if a slice is longer than target_len_sec, we put it entirely in it's own piece
