@@ -10,7 +10,7 @@ def save(seq, fname, index):
     output = np.hstack(seq)
     file_name = fname.parent / (fname.stem + f"_{index:04}.wav")
     fname.parent.mkdir(exist_ok=True, parents=True)
-    sf.write(file_name, output, 16000)
+    sf.write(file_name, output, samplerate=16000)
 
 
 def cut_sequence(pathSeq, vad, path_out, target_len_sec):
