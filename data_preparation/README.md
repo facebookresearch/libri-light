@@ -10,7 +10,7 @@ meta-data construction, and dataset filtering and splitting.
 
 ### 1. Get and prepare the unlabelled data
 
-**Download.** The unlabelled data is spit into 3 subsets of increasing lengths (small, medium, large). These splits are done to enable doing experiments on smaller amounts of data (also, downloading the large dataset can take several days!).
+**1.A Download.** The unlabelled data is spit into 3 subsets of increasing lengths (small, medium, large). These splits are done to enable doing experiments on smaller amounts of data (also, downloading the large dataset can take several days!).
 
 -  [small.tar  (577 hours, 35 GB)](https://dl.fbaipublicfiles.com/librilight/data/small.tar)   
 -  [medium.tar (5193 hours, 321 GB)](https://dl.fbaipublicfiles.com/librilight/data/medium.tar)
@@ -40,7 +40,7 @@ Once the dataset is downloaded, "untarred" and organised into a directory `UNLAB
 ```
 This will construct in `OUTPUT_DIR` two .png files (plus .json files in a .cache directory)
 
-**Segment.** Each file may be rather long and may not fit into memory.  As a final step, we provide a script to segment the files into roughly 60sec sequences obtained by concatenating consecutive voice activity chunks.
+**1.B Segment.** Each file may be rather long and may not fit into memory.  As a final step, we provide a script to segment the files into roughly 60sec sequences obtained by concatenating consecutive voice activity chunks.
 
 ```console
     python segment_w_VAD.py --input_dir INPUT_DIR --output_dir OUTPUT_DIR
