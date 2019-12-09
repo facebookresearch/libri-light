@@ -108,7 +108,18 @@ And convert them from .mp3 to flac:
 python unzip_and_convert.py unzip $OUTPUT_MP3 -o $OUTPUT_FLAC -f .flac
 ```
 
-Finally, complete the metadata files:
+To extract the VAD, run: 
+```console
+please explain here
+```
+
+To extract the SNR, run: 
+```console
+please explain here
+```
+
+
+To compute the metadata file:
 ```console
 python complete_metadata.py --path_metadata $OUTPUT_DOWNLOAD --out_dir $OUTPUT_FLAC --ignore_cache
 ```
