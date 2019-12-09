@@ -21,7 +21,15 @@ In addition, we also provide a 4th subset containing potentially duplicated book
    ll_unlab_duplicate.tar.gz  ( 4500 hours,  274 GB)
 
 
+## Do the stats
+
+## Cut the data into segments
+
+
 We also provide scripts for preparing the raw dataset into useable segments for model training (segmentation).
 
+
+
+## Regenerate the entire data from scratch
 
 ![pipeline](data_preparation_pipeline.svg)
