@@ -93,7 +93,7 @@ def save_cache(path_cache, data):
 
 
 def load_cache(path_cache, fallback_function, args=None,
-              save=True, ignore_cache=False):
+               save=True, ignore_cache=False):
 
     path_cache = Path(path_cache)
     if not path_cache.is_file() or ignore_cache:
@@ -125,7 +125,7 @@ def getAllFileMultiVersion(path_dir, list_metadata):
 
     output = []
     for metadata_name in list_metadata:
-        fullPath = os.path.join(path_dir,metadata_name)
+        fullPath = os.path.join(path_dir, metadata_name)
 
         with open(fullPath, 'rb') as file:
             genre = json.load(file)["genre"]
@@ -137,6 +137,7 @@ def getAllFileMultiVersion(path_dir, list_metadata):
             output.append(metadata_name)
 
     return output
+
 
 def getFilesWithTag(path_dir, list_metadata, tagName, tagValues):
 
@@ -150,7 +151,7 @@ def getFilesWithTag(path_dir, list_metadata, tagName, tagValues):
         if not isinstance(tagData, list):
             tagData = [tagData]
 
-        if len(set(tagValues).intersection(set(tagData)))>0:
+        if len(set(tagValues).intersection(set(tagData))) > 0:
             output.append(metadata_name)
 
     return output
@@ -164,7 +165,7 @@ def getFilesWithWordInTitle(path_dir, list_metadata, word):
         with open(fullPath, 'rb') as file:
             title = json.load(file)["title"].lower()
 
-        if title.find(word)>=0:
+        if title.find(word) >= 0:
             output.append(metadata_name)
 
     return output
@@ -184,27 +185,32 @@ def getFilesStats(path_dir, list_metadata):
     for metadataFile in list_metadata:
 
         zip = get_zip_name(metadataFile)
-        statsArray[index][hasZip] = int(os.path.isfile(os.path.join(path_dir, zip)))
+        statsArray[index][hasZip] = int(
+            os.path.isfile(os.path.join(path_dir, zip)))
 
         txt = get_txt_name(metadataFile)
-        statsArray[index][hasTxt] = int(os.path.isfile(os.path.join(path_dir, txt)))
+        statsArray[index][hasTxt] = int(
+            os.path.isfile(os.path.join(path_dir, txt)))
 
         spe = get_speaker_data_name(metadataFile)
-        statsArray[index][hasSpeaker] = int(hasSpeakerData(os.path.join(path_dir, spe)))
+        statsArray[index][hasSpeaker] = int(
+            hasSpeakerData(os.path.join(path_dir, spe)))
 
-        index+=1
+        index += 1
 
     print(f'Number of files : {index}')
     print(f'Has zip data : {np.sum(statsArray[:, hasZip]) / float(index)}')
     print(f'Has txt data : {np.sum(statsArray[:, hasTxt]) / float(index)}')
-    print(f'Has speaker data : {np.sum(statsArray[:, hasSpeaker]) / float(index)}')
-    print(f'Has all: {np.sum(statsArray[:,0] * statsArray[:,1] * statsArray[:,2] > 0) / float(index)}')
+    print(
+        f'Has speaker data : {np.sum(statsArray[:, hasSpeaker]) / float(index)}')
+    print(
+        f'Has all: {np.sum(statsArray[:,0] * statsArray[:,1] * statsArray[:,2] > 0) / float(index)}')
 
 
 def strToHours(inputStr):
 
     hours, minutes, sec = map(float, inputStr.split(':'))
-    return hours + minutes / 60.0 + sec /3600.0
+    return hours + minutes / 60.0 + sec / 3600.0
 
 
 def getTotalTime(path_dir, list_metadata):
@@ -268,7 +274,7 @@ def get_speaker_data(path_dir, list_metadata, pathWav):
         zipName = get_zip_name(metadataName)
         wavName = zipName.replace("64kb_mp3.zip", "wav")
         speakerData = getJSON(os.path.join(path_dir,
-                              get_speaker_data_name(metadataName)))
+                                           get_speaker_data_name(metadataName)))
 
         dirWav = os.path.join(pathWav, wavName)
         if not os.path.isdir(dirWav):
@@ -291,7 +297,7 @@ def get_speaker_data(path_dir, list_metadata, pathWav):
                 speakers = ['null']
 
             if len(speakers) > 1:
-                multiples+= size
+                multiples += size
 
             for IDspeaker in speakers:
                 if IDspeaker not in speakerTalk:
@@ -318,7 +324,7 @@ def get_speaker_hours_data(path_dir, list_metadata, pathWav):
         zipName = get_zip_name(metadataName)
         wavName = zipName.replace("64kb_mp3.zip", "wav")
         speakerData = getJSON(os.path.join(path_dir,
-                              get_speaker_data_name(metadataName)))
+                                           get_speaker_data_name(metadataName)))
 
         dirWav = os.path.join(pathWav, wavName)
         if not os.path.isdir(dirWav):
@@ -363,7 +369,7 @@ def getMissingTranscriptList(path_dir, list_metadata):
     for nM, metadataName in enumerate(list_metadata):
 
         txtName = get_txt_name(metadataName)
-        if not os.path.isfile(os.path.join(path_dir,txtName)):
+        if not os.path.isfile(os.path.join(path_dir, txtName)):
             output.append(metadataName)
 
     return output
@@ -383,8 +389,8 @@ def count(path_dir, list_metadata, key):
             data = json.load(file)
 
         urlTextSource = data["url_text_source"]
-        if urlTextSource.find(key) >=0:
-            output.append((metadataName,urlTextSource))
+        if urlTextSource.find(key) >= 0:
+            output.append((metadataName, urlTextSource))
 
     bar.finish()
     return output
@@ -396,7 +402,7 @@ def getStatus(path_dir, list_metadata):
     for item in list_metadata:
         textFileName = get_txt_name(item)
         if os.path.isfile(os.path.join(path_dir, textFileName)):
-            nTextData+=1
+            nTextData += 1
 
     print(f"{nTextData} text data found for {len(list_metadata)} items")
 
@@ -425,8 +431,8 @@ def get_hour_tag_repartition(path_dir, list_metadata, tagName, pathWav):
         if not os.path.isdir(path_dirWav):
             continue
 
-        wavList = [ f for f in os.listdir(path_dirWav)
-                    if os.path.splitext(f)[1] == ".wav"]
+        wavList = [f for f in os.listdir(path_dirWav)
+                   if os.path.splitext(f)[1] == ".wav"]
 
         totAudio = 0
         for item in wavList:
@@ -434,7 +440,7 @@ def get_hour_tag_repartition(path_dir, list_metadata, tagName, pathWav):
             totAudio += info.length / (info.rate * 3600.)
 
         if value is None:
-            value='null'
+            value = 'null'
 
         if not isinstance(value, list):
             value = [value]
@@ -442,9 +448,9 @@ def get_hour_tag_repartition(path_dir, list_metadata, tagName, pathWav):
         full_tag = '+'.join(value)
 
         if full_tag not in tags:
-            tags[full_tag]=0
+            tags[full_tag] = 0
 
-        tags[full_tag]+=totAudio
+        tags[full_tag] += totAudio
 
     bar.finish()
     return tags
@@ -459,7 +465,7 @@ def get_tag_list(tagStats):
 
 def get_tags_dependencies(tagStats, tagList):
 
-    out = {x:{} for x in tagList}
+    out = {x: {} for x in tagList}
 
     unique_symbol = 'unique'
     assert(unique_symbol not in tagList)
@@ -485,8 +491,8 @@ def get_tags_dependencies(tagStats, tagList):
                     if tj not in out[ti]:
                         out[ti][tj] = 0
 
-                    out[ti][tj]+=val
-                    out[tj][ti]+=val
+                    out[ti][tj] += val
+                    out[tj][ti] += val
     return out
 
 
@@ -495,7 +501,7 @@ def combine_reverse_foldings(f1, f2):
     Compute f1 o f2
     """
 
-    return {x:f1.get(f2[x], f2[x]) for x in f2}
+    return {x: f1.get(f2[x], f2[x]) for x in f2}
 
 
 def build_reverse_folding(gender_folding):

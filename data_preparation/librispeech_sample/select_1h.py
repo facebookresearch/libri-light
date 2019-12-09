@@ -3,6 +3,7 @@ import argparse
 import pathlib
 import random
 
+
 def do_split(records, seconds_per_speaker):
     speakers = list(set([r.speaker.id for r in records]))
     random.shuffle(speakers)
@@ -31,8 +32,9 @@ def get_args():
     parser.add_argument('--meta_path', type=str)
 
     args = parser.parse_args()
- 
+
     return args
+
 
 if __name__ == '__main__':
     args = get_args()
@@ -50,17 +52,13 @@ if __name__ == '__main__':
             records = list(all_records)
             print(f'Selecting from {t}, gender {gender}, tag {tag}')
 
-            records = filter(lambda x: x.speaker.gender.lower() == gender and x.speaker.subset == t, records)
+            records = filter(lambda x: x.speaker.gender.lower()
+                             == gender and x.speaker.subset == t, records)
             records = list(records)
 
             records_filtered = do_split(records, args.max_seconds_per_speaker)
             print_stats(records_filtered)
 
             if args.target_dir:
-                materialize(records_filtered, args.target_dir, tag=tag, move=True)
-
-
-
-
-
-
+                materialize(records_filtered, args.target_dir,
+                            tag=tag, move=True)

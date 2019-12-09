@@ -6,11 +6,13 @@ Cleans the *.txt files, removing the texts that correspond to the flac's not in 
 Assumes Librispeech-like outline.
 """
 
+
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--dataset', type=str)
     args = parser.parse_args()
     return args
+
 
 if __name__ == '__main__':
     args = get_args()
@@ -19,7 +21,7 @@ if __name__ == '__main__':
     txt_names = sorted(list(txt_names))
 
     for txt_name in txt_names:
-        print(txt_name) 
+        print(txt_name)
 
         parent_dir = txt_name.parent
 

@@ -28,7 +28,7 @@ class GenreScapper(HTMLParser):
 
     def handle_data(self, data):
         if self.getTitle:
-            if data.find("Genre") >=0:
+            if data.find("Genre") >= 0:
                 self.takeData = True
                 self.getTitle = False
         elif self.takeData and self.genre is None:

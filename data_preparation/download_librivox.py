@@ -140,7 +140,7 @@ def import_page(baseUrl, offset, limit, dirOut, language):
         chapterReaders, chaptersNames = None, None
         try:
             chaptersNames, chapterReaders = \
-                    get_reader_data(bookData['url_librivox'])
+                get_reader_data(bookData['url_librivox'])
         except:
             print(colored(f'Error when loading title {title} metadata', 'red'))
             print(colored(sys.exc_info(), 'red'))

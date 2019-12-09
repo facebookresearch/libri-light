@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 plt.switch_backend('agg')
 
 
-def plot_hist(seq, nBins, pathOut, y_label="",title="",
-             x_label="", normalized=True, y_scale=None, x_scale=None):
+def plot_hist(seq, nBins, pathOut, y_label="", title="",
+              x_label="", normalized=True, y_scale=None, x_scale=None):
 
     if isinstance(seq, list):
         seq = np.array(seq)
@@ -38,7 +38,7 @@ def plot_scatter(seqs, xLabel, pathOut, x_label="", y_label="", title=""):
 
 
 def plot_seq(seqs, xLabel, pathOut, x_label="", y_label="", title="",
-            xscale="linear", yscale="linear", legend=None):
+             xscale="linear", yscale="linear", legend=None):
     plt.clf()
     for i in range(seqs.shape[0]):
         plt.plot(xLabel, seqs[i])
@@ -60,8 +60,8 @@ def plot_pie(data, pathOut, title=""):
 
     plt.clf()
     plt.style.use('classic')
-    patches, texts, _ = plt.pie(sizes,autopct=lambda p: '{:.0f}'.format(p * sum(sizes) / 100),
-                             shadow=False, startangle=90, pctdistance=1.1)
+    patches, texts, _ = plt.pie(sizes, autopct=lambda p: '{:.0f}'.format(p * sum(sizes) / 100),
+                                shadow=False, startangle=90, pctdistance=1.1)
     #plt.axes([0.3, 0.3, .5, .5])
     plt.legend(patches, labels, loc='lower right',
                fontsize=8)

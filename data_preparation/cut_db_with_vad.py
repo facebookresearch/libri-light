@@ -27,7 +27,7 @@ def loadVAD(pathVAD):
     with open(pathVAD, 'r') as file:
         data = file.readlines()
 
-    assert(len(data) == 1 )
+    assert(len(data) == 1)
     vadtxt = data[0].replace('\n', '')
     vad = vadtxt.split()
     if vad[-1] == '':
@@ -39,17 +39,17 @@ def loadVAD(pathVAD):
 def cutWithVAD(seq, vad, threshold, stepVAD):
 
     size = seq.shape[0]
-    assert(stepVAD * (len(vad) -1) <= size)
+    assert(stepVAD * (len(vad) - 1) <= size)
 
     out = []
-    lastIndex=0
+    lastIndex = 0
     for index, vadStatus in enumerate(vad):
 
         if vadStatus < threshold:
             if lastIndex < index:
-                upIndex = index if index == len(vad) -1 else index+1
+                upIndex = index if index == len(vad) - 1 else index+1
                 out.append((lastIndex * stepVAD, upIndex * stepVAD))
-            lastIndex=index+1
+            lastIndex = index+1
 
     if lastIndex < len(vad):
         out.append((lastIndex * stepVAD, size))
@@ -60,17 +60,17 @@ def greedyMerge(cuts, targetSize, sizeMultiplier):
 
     out = []
     currSize = 0
-    currBitSize=0
+    currBitSize = 0
     lastIndex = 0
     for index, item in enumerate(cuts):
         minStep, maxStep = item
-        currBitSize+=(maxStep - minStep)
-        currSize+= (maxStep - minStep) * sizeMultiplier
+        currBitSize += (maxStep - minStep)
+        currSize += (maxStep - minStep) * sizeMultiplier
         if currSize > targetSize:
             out.append((currBitSize, cuts[lastIndex:index+1]))
-            lastIndex= index + 1
-            currSize=0
-            currBitSize=0
+            lastIndex = index + 1
+            currSize = 0
+            currBitSize = 0
 
     if lastIndex < len(cuts):
         out.append((currBitSize, cuts[lastIndex:]))
@@ -84,18 +84,18 @@ def saveWithTimeStamps(seq, timeStamps, dirOut, nameOut, format, samplerate):
 
         size, cuts = cutsBlock
         locSeq = np.empty((size,), dtype=seq.dtype)
-        i=0
+        i = 0
         for indexLow, indexUp in cuts:
             locSize = indexUp - indexLow
             locSeq[i: i+locSize] = seq[indexLow:indexUp]
-            i+=locSize
+            i += locSize
         fullName = f"{nameOut}_{index:04}{format}"
         fullPathOut = os.path.join(dirOut, fullName)
 
         sf.write(fullPathOut, locSeq, samplerate)
 
 
-def cutSequence(pathSeq, pathVAD, pathOut, chunkSize,nameOut, formatOut=".wav",
+def cutSequence(pathSeq, pathVAD, pathOut, chunkSize, nameOut, formatOut=".wav",
                 targetSize=10, threshold=0.001):
     vad = loadVAD(pathVAD)
     data, samplerate = sf.read(pathSeq)
@@ -103,7 +103,7 @@ def cutSequence(pathSeq, pathVAD, pathOut, chunkSize,nameOut, formatOut=".wav",
     assert(samplerate == 16000)
 
     step = int(samplerate * chunkSize)
-    vadCuts = cutWithVAD(data,vad, threshold, step)
+    vadCuts = cutWithVAD(data, vad, threshold, step)
     mergeTimeStamps = greedyMerge(vadCuts, targetSize, 1.0 / samplerate)
     saveWithTimeStamps(data, mergeTimeStamps, pathOut,
                        nameOut, formatOut, samplerate)
@@ -194,7 +194,7 @@ def cut_db(book_data, pathMetadata, pathOut, targetSize=10,
             cutBook(pathBook, pathMetadata, pathOut, targetSize=targetSize,
                     lock=l)
             l.acquire()
-            v.value+=1
+            v.value += 1
             pbar.update(v.value)
             l.release()
 
@@ -205,7 +205,7 @@ def cut_db(book_data, pathMetadata, pathOut, targetSize=10,
     for process in range(nProcess):
         indexStart = sizeSlice * process
         indexEnd = indexStart + sizeSlice if process < nProcess - 1 else n_books
-        p = Process(target=processStack, args=(v, lock, indexStart,indexEnd))
+        p = Process(target=processStack, args=(v, lock, indexStart, indexEnd))
         p.start()
         stack.append(p)
 

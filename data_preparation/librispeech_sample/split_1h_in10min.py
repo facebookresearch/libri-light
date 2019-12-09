@@ -3,6 +3,7 @@ import pathlib
 import argparse
 import random
 
+
 def do_split(records):
     speakers = set([r.speaker.id for r in records])
 
@@ -19,8 +20,9 @@ def get_args():
     parser.add_argument('--meta_path', type=str)
 
     args = parser.parse_args()
- 
+
     return args
+
 
 if __name__ == '__main__':
     args = get_args()
@@ -36,7 +38,8 @@ if __name__ == '__main__':
             records = list(all_records)
             print(f'Selecting from {t}, gender {gender}')
 
-            records = filter(lambda x: x.speaker.gender.lower() == gender and x.speaker.subset == t, records)
+            records = filter(lambda x: x.speaker.gender.lower()
+                             == gender and x.speaker.subset == t, records)
             records = list(records)
             print(f'{len(records)} utterances in the split')
 
@@ -44,4 +47,4 @@ if __name__ == '__main__':
                 print_stats(split)
 
                 if args.target_dir:
-                        materialize(split, args.target_dir + f'/{i}/', tag=tag)
+                    materialize(split, args.target_dir + f'/{i}/', tag=tag)

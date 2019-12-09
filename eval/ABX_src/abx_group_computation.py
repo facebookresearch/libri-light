@@ -21,8 +21,8 @@ def check_dtw_group_validity(a, b, x):
 
 def get_cosine_distance_batch(a1, a2, epsilon=1e-8):
     r""" a1 and a2 must be normalized"""
-    N1, S1, D = a1.size() # Batch x Seq x Channel
-    N2, S2, D = a2.size() # Batch x Seq x Channel
+    N1, S1, D = a1.size()  # Batch x Seq x Channel
+    N2, S2, D = a2.size()  # Batch x Seq x Channel
 
     prod = (a1.view(N1, 1, S1, 1, D)) * (a2.view(1, N2, 1, S2, D))
     # Sum accross the channel dimension

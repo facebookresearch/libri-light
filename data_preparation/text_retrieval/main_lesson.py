@@ -33,14 +33,14 @@ class ToCParser(HTMLParser):
     def handle_starttag(self, tag, attrs):
         if tag == "div" and ("class", "lhlink") in attrs:
             self.inLinkBlock = True
-        elif tag =='a' and self.inLinkBlock:
+        elif tag == 'a' and self.inLinkBlock:
             for name, value in attrs:
                 if name == "href":
-                    self.chaptersList.append(get_tag_value_in_url(value, 'story'))
-
+                    self.chaptersList.append(
+                        get_tag_value_in_url(value, 'story'))
 
     def handle_endtag(self, tag):
-        if tag =="div":
+        if tag == "div":
             self.inLinkBlock = False
 
 
@@ -107,7 +107,7 @@ def get_all_text_from_main_lesson(url):
 
 
 def is_main_lesson_url(url):
-    return url.find("mainlesson.com") >=0
+    return url.find("mainlesson.com") >= 0
 
 
 if __name__ == "__main__":

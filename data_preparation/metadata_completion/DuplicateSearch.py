@@ -16,7 +16,7 @@ def getSameAuthorGroups(listMetadata, pathDIR):
 
         if len(authorsData) == 0:
             authorIDs = [-1]
-            nEmpty+=1
+            nEmpty += 1
         else:
             authorIDs = []
             for author in authorsData:
@@ -28,7 +28,7 @@ def getSameAuthorGroups(listMetadata, pathDIR):
                 authorIDs.append(id)
 
         if len(authorIDs) > 1:
-            nSeverals+=1
+            nSeverals += 1
 
         for id in authorIDs:
             if id not in output:
@@ -95,13 +95,13 @@ def getBaseTitle(title):
         if word in keyWords and index < nItems - 1:
             if tmp[index+1].isdigit():
                 tags[word] = int(tmp[index+1])
-                index+=2
+                index += 2
                 continue
         elif len(word) > 0 and word not in forbiddenWords:
             if len(baseTitle) > 0:
-                baseTitle+= " "
-            baseTitle+=word
-        index+=1
+                baseTitle += " "
+            baseTitle += word
+        index += 1
 
     return baseTitle, tags
 
@@ -109,7 +109,8 @@ def getBaseTitle(title):
 def prepareMatches(listMetadata, pathDIR):
 
     authorGroups = getSameAuthorGroups(listMetadata, pathDIR)
-    authorGroups = [ list(authorGroups[x]) for x in authorGroups if len(authorGroups[x]) > 1]
+    authorGroups = [list(authorGroups[x])
+                    for x in authorGroups if len(authorGroups[x]) > 1]
     print(f"{len(authorGroups)} groups of books with the same author")
     print("Preparing the data...")
 
@@ -138,10 +139,10 @@ def getPossibleMatches(allGroups):
 
     output = []
     for group in allGroups:
-        group.sort(key = lambda x: x[0])
+        group.sort(key=lambda x: x[0])
         groupSize = len(group)
         indexStart = 0
-        while indexStart < groupSize -1:
+        while indexStart < groupSize - 1:
             currMatch = []
             currTitle, currTags, currMetdataName = group[indexStart]
             for indexEnd in range(indexStart + 1, groupSize):

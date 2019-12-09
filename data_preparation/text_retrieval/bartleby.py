@@ -15,7 +15,7 @@ class BarthelebyParser(HTMLParser):
         self.global_status = BarthelebyParser.GLOBAL_STATUS.NONE
         self.local_status = BarthelebyParser.LOCAL_STATUS.NONE
         self.title = ""
-        self.ignore=False
+        self.ignore = False
         self.textFound = False
 
     def handle_comment(self, tag):
@@ -37,10 +37,10 @@ class BarthelebyParser(HTMLParser):
     def handle_data(self, data):
         if self.global_status == BarthelebyParser.GLOBAL_STATUS.IN_TITLE:
             if self.local_status == BarthelebyParser.LOCAL_STATUS.PARAGRAPH:
-                self.title+= data
+                self.title += data
         elif self.global_status == BarthelebyParser.GLOBAL_STATUS.IN_CHAPTER:
             if self.local_status == BarthelebyParser.LOCAL_STATUS.PARAGRAPH and not self.ignore:
-                self.text+= data
+                self.text += data
 
     def handle_starttag(self, tag, attrs):
         if self.global_status == BarthelebyParser.GLOBAL_STATUS.IN_TITLE:
@@ -49,7 +49,7 @@ class BarthelebyParser(HTMLParser):
         elif self.global_status == BarthelebyParser.GLOBAL_STATUS.IN_CHAPTER:
             if tag == 'tr':
                 if self.local_status != BarthelebyParser.LOCAL_STATUS.NONE:
-                    self.text+='\n'
+                    self.text += '\n'
                 self.local_status = BarthelebyParser.LOCAL_STATUS.PARAGRAPH
             if tag == "i":
                 self.ignore = True
@@ -142,9 +142,7 @@ def is_bartheleby_url(url):
     return url.find("bartleby.com") >= 0
 
 
-
 if __name__ == "__main__":
-
 
     url = "https://www.bartleby.com/95/1.html"
     data = get_bartheleby_data(url)
@@ -152,6 +150,6 @@ if __name__ == "__main__":
         file.write(data)
     #parser = BarthelebyParser()
     #req = requests.get(url)
-    #parser.feed(str(req._content))
-    #print(parser.title)
+    # parser.feed(str(req._content))
+    # print(parser.title)
     #print(parser.text.replace('\\n', '\n').replace("\\'", "'"))

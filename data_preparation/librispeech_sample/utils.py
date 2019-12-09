@@ -5,29 +5,33 @@ import shutil
 
 
 Speaker = namedtuple('Speaker', ['id', 'gender', 'subset'])
-FileRecord = namedtuple('FileRecord', ['fname', 'length', 'speaker', 'book', 'text_file'])
+FileRecord = namedtuple(
+    'FileRecord', ['fname', 'length', 'speaker', 'book', 'text_file'])
+
 
 def get_speakers(speaker_path):
     all_speakers = []
     with open(speaker_path) as f:
         for line in f:
-            if line.startswith(';'): continue
+            if line.startswith(';'):
+                continue
 
             line = line.split('|')
             speaker_id, gender, subset = [x.strip() for x in line[0:3]]
             speaker_id = int(speaker_id)
 
-            assert subset in ['test-clean', 'train-clean-360', 'train-clean-100', 
+            assert subset in ['test-clean', 'train-clean-360', 'train-clean-100',
                               'test-other', 'dev-clean', 'train-other-500', 'dev-other'], subset
 
             speaker = Speaker(id=speaker_id, gender=gender, subset=subset)
             all_speakers.append(speaker)
     return all_speakers
-        
+
 
 def get_filelength(fname):
     info = torchaudio.info(fname)[0]
     return info.length
+
 
 def traverse_tree(root, ext='flac'):
     fnames = pathlib.Path(root).rglob(f"*.{ext}")
@@ -40,6 +44,7 @@ def traverse_tree(root, ext='flac'):
         lengths.append(length)
 
     return list(zip(fnames, lengths))
+
 
 def get_speaker_fname(fname):
     stemmed = fname.stem
@@ -62,7 +67,8 @@ def full_records(speakers, fname2length, subset_name=None):
             assert subset_name == speaker.subset
         # hacky
         text_file = fname.parent / f'{speaker.id}-{book}.trans.txt'
-        frecord = FileRecord(speaker=speaker, length=length, fname=fname, book=book, text_file=text_file)
+        frecord = FileRecord(speaker=speaker, length=length,
+                             fname=fname, book=book, text_file=text_file)
         all_records.append(frecord)
 
     return all_records
@@ -91,9 +97,11 @@ def materialize(records, target_dir, tag=None, move=False):
         # outline:
         # target_dir / speaker / book / file
         if tag is None:
-            target_book_dir = target_dir / str(record.speaker.id) / str(record.book)
+            target_book_dir = target_dir / \
+                str(record.speaker.id) / str(record.book)
         else:
-            target_book_dir = target_dir / tag / str(record.speaker.id) / str(record.book)
+            target_book_dir = target_dir / tag / \
+                str(record.speaker.id) / str(record.book)
         target_book_dir.mkdir(exist_ok=True, parents=True)
 
         if not move:
@@ -112,14 +120,19 @@ def materialize(records, target_dir, tag=None, move=False):
         for src, dst in to_move:
             shutil.move(src, dst)
 
-def print_stats(records):
-    lambda_speaker = lambda r: r.speaker.id
-    lambda_time = lambda r: r.length / 16000.0
 
-    speaker_time = get_histogram(records, lambda_key=lambda_speaker, lambda_value=lambda_time)
+def print_stats(records):
+    def lambda_speaker(r): return r.speaker.id
+    def lambda_time(r): return r.length / 16000.0
+
+    speaker_time = get_histogram(
+        records, lambda_key=lambda_speaker, lambda_value=lambda_time)
     print(f'Unique speakers: {len(speaker_time)}')
     times = speaker_time.values()
-    min_time, max_time, mean_time, total_time = min(times), max(times), sum(times) / len(times), sum(times)
-    min_time, max_time, mean_time, total_time = map(int, [min_time, max_time, mean_time, total_time])
-    print(f'Min/Mean/Max/Total, seconds: {min_time}/{mean_time}/{max_time}/{total_time}')
+    min_time, max_time, mean_time, total_time = min(
+        times), max(times), sum(times) / len(times), sum(times)
+    min_time, max_time, mean_time, total_time = map(
+        int, [min_time, max_time, mean_time, total_time])
+    print(
+        f'Min/Mean/Max/Total, seconds: {min_time}/{mean_time}/{max_time}/{total_time}')
     print(f'n_utterances: {len(records)}')

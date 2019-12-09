@@ -40,38 +40,38 @@ class SingleSequenceDataset(Dataset):
         self.transpose = transpose
         self.loadSeqs()
 
-
     def loadSeqs(self):
 
         # Labels
         self.seqOffset = [0]
         self.phoneLabels = []
         self.phoneOffsets = [0]
-        self.data =[]
+        self.data = []
         self.maxSize = 0
-        self.maxSizePhone =0
+        self.maxSizePhone = 0
 
         # Data
 
         nprocess = min(30, len(self.seqNames))
 
         start_time = time.time()
-        to_load = [ Path(self.pathDB) / x for _, x in self.seqNames]
+        to_load = [Path(self.pathDB) / x for _, x in self.seqNames]
 
         with Pool(nprocess) as p:
             poolData = p.map(load, to_load)
 
-        tmpData =[]
+        tmpData = []
         poolData.sort()
 
         totSize = 0
-        minSizePhone=1000000
+        minSizePhone = 1000000
         for seqName, seq in poolData:
-            self.phoneLabels+=self.phoneLabelsDict[seqName]
+            self.phoneLabels += self.phoneLabelsDict[seqName]
             self.phoneOffsets.append(len(self.phoneLabels))
             self.maxSizePhone = max(self.maxSizePhone,
                                     len(self.phoneLabelsDict[seqName]))
-            minSizePhone = min(minSizePhone, len(self.phoneLabelsDict[seqName]))
+            minSizePhone = min(minSizePhone, len(
+                self.phoneLabelsDict[seqName]))
             sizeSeq = seq.size(1)
             self.maxSize = max(self.maxSize, sizeSeq)
             totSize += sizeSeq
@@ -117,17 +117,18 @@ class CTCPhoneCriterion(torch.nn.Module):
         super(CTCPhoneCriterion, self).__init__()
         self.seqNorm = seqNorm
         self.epsilon = 1e-8
-        self.dropout = torch.nn.Dropout2d(p=0.5, inplace=False) if dropout else None
+        self.dropout = torch.nn.Dropout2d(
+            p=0.5, inplace=False) if dropout else None
         self.conv1 = torch.nn.LSTM(dimEncoder, dimEncoder,
                                    num_layers=1, batch_first=True)
-        self.PhoneCriterionClassifier = torch.nn.Conv1d(dimEncoder, nPhones + 1, sizeKernel, stride= sizeKernel // 2)
+        self.PhoneCriterionClassifier = torch.nn.Conv1d(
+            dimEncoder, nPhones + 1, sizeKernel, stride=sizeKernel // 2)
         self.lossCriterion = torch.nn.CTCLoss(blank=nPhones,
                                               reduction=reduction,
                                               zero_infinity=True)
         self.relu = torch.nn.ReLU()
         self.BLANK_LABEL = nPhones
         self.useLSTM = LSTM
-
 
     def getPrediction(self, cFeature):
         B, S, H = cFeature.size()
@@ -138,12 +139,12 @@ class CTCPhoneCriterion(torch.nn.Module):
         if self.useLSTM:
             cFeature = self.conv1(cFeature)[0]
 
-        cFeature = cFeature.permute(0,2,1)
+        cFeature = cFeature.permute(0, 2, 1)
 
         if self.dropout is not None:
             cFeature = self.dropout(cFeature)
 
-        return self.PhoneCriterionClassifier(cFeature).permute(0,2,1)
+        return self.PhoneCriterionClassifier(cFeature).permute(0, 2, 1)
 
     def forward(self, cFeature, featureSize, label, labelSize):
 
@@ -206,8 +207,8 @@ def trainStep(trainLoader,
         loss = criterion(c_feature, sizeSeq, phone, sizePhone)
         loss.mean().backward()
 
-        avg_loss+= loss.mean().item()
-        nItems+=1
+        avg_loss += loss.mean().item()
+        nItems += 1
         optimizer.step()
 
     return avg_loss / nItems
@@ -229,7 +230,7 @@ def valStep(valLoader,
             c_feature = model(seq)
             sizeSeq = sizeSeq / downsamplingFactor
             loss = criterion(c_feature, sizeSeq, phone, sizePhone)
-            avg_loss+= loss.mean().item()
-            nItems+=1
+            avg_loss += loss.mean().item()
+            nItems += 1
 
     return avg_loss / nItems
