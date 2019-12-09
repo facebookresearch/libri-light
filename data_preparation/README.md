@@ -28,21 +28,21 @@ By combining these subsets, you can construct the 3 splits described in the Libr
 
 The directory structure of the archives is the same as for librispeech:
 
-    dataset_name/speakerID/file_name/
+    dataset_name/speakerID/book_name/
 
-where `dataset_name` is `small`, `medium`, `large`, or `duplicate`, `speakerID` is the librivox speakerID (a number), and `file_name` the name of the original LibriVox audio file. Inside each directory, you should find a `.flac` and a `.json`. See below for the format  of the `.json` files.
+where `dataset_name` is `small`, `medium`, `large`, or `duplicate`, `speakerID` is the librivox speakerID (a number), and `book_name` the name of the original LibriVox audiobook file. Inside each directory, you should find a set of `.flac` and `.json` files. See below for the format  of the `.json` files.
 
-Once the dataset is downloaded and "untarred", into `UNLAB_DIR/` you can check its statistics with the command
+Once the dataset is downloaded and "untarred", into `UNLAB_DIR` you can check its statistics with the command
 
-     python build_all_stats.py UNLAB_DIR UNLAB_DIR OUTPUT_DIR
+    python build_all_stats.py UNLAB_DIR OUTPUT_DIR
 
-This will construct in `OUTPUT_DIR/` two .png files (plus .json files in a .cache directory)
+This will construct in `OUTPUT_DIR` two .png files (plus .json files in a .cache directory)
 
 Each file may be rather long and may not fit into memory.  As a final step, we provide a script to cut the files into roughly 60sec sequences obtained by concatenating consecutive voice activity chunks.
 
-     python cut_by_vad.py --input_dir INPUT_DIR --output_dir OUTPUT_DIR
+    python cut_by_vad.py --input_dir INPUT_DIR --output_dir OUTPUT_DIR
 
-In `OUTPUT_DIR`, there will be the same structure as above, but each file_name directory will have a list of smaller files (`.flac`).
+In `OUTPUT_DIR`, there will be the same structure as above, but each file_name directory will have a list of smaller files (`.flac`). You can change this step as fits your model. 
 
 
 ### 2. Get the limited-supervision train data
@@ -53,7 +53,7 @@ The limited supervision training sets are built on Librispeech. They consist in 
 
 The directory structure is the following:
 
-      1h/        # data of the 1h split (made up of 6 folds of 10 min)
+     1h/         # data of the 1h split (made up of 6 folds of 10 min)
          0/         # first 10 min fold
            clean/     # 2 speakers, clean
            other/     # 2 speakers, other
@@ -61,10 +61,10 @@ The directory structure is the following:
          5/         # last 10 min fold
            clean/     # 2 speakers, clean
            other/     # 2 speakers, other
-      9h/        # remaining data of the 10h split (10h=1h+9h)
+     9h/         # remaining data of the 10h split (10h=1h+9h)
          clean /    # 12 speakers, clean
          other/     # 12 speakers, other
-      phones/    # phoneme alignment for all of the files
+     phones/     # phoneme alignment for all of the files
 
 
 The 10h split is made by combining the data from the `9h/` and the `1h` directories. The 1h split is itself made of 6 folds of 10 min splits. The `phone/` directory contains the frame-wise phoneme transcription of the various splits (the IPA phone mappings are in `phone_mapping.json`). There is also the phoneme transcription of the librispeech dev and test sets.  
@@ -77,10 +77,10 @@ Alternatively, you can reconstruct this dataset by downloading by hand librispee
 
 These are the standard librispeech dev and test sets. They can be gotten at the following address:
 
-      wget http://www.openslr.org/resources/12/dev-clean.tar.gz
-      wget http://www.openslr.org/resources/12/dev-other.tar.gz
-      wget http://www.openslr.org/resources/12/test-clean.tar.gz
-      wget http://www.openslr.org/resources/12/test-other.tar.gz
+    wget http://www.openslr.org/resources/12/dev-clean.tar.gz
+    wget http://www.openslr.org/resources/12/dev-other.tar.gz
+    wget http://www.openslr.org/resources/12/test-clean.tar.gz
+    wget http://www.openslr.org/resources/12/test-other.tar.gz
 
 
 
@@ -120,7 +120,7 @@ We created one json file per LibriVox audio file. This is different from the Lib
      {
      "speaker" : "960"    # LibriVox speaker ID
      "book_meta": {       # a bunch of LibriVox metadata concerning the book relevant to that file
-       "id":  319                    # LibriVox book ID
+       "id":  "319"                  # LibriVox book ID
        "title": "History of Holland" # LibriVox book title
        ...                        
        "genre": [                    # LibriVox genre
