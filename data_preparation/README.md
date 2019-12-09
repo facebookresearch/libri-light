@@ -144,7 +144,7 @@ We created one json file per LibriVox audio file. This is different from the Lib
          ],                          # from this point, this is our own-libri-light metadata:
        "Dramatic Readings": false,   # boolean for dramatic vs normal reading
        "meta_genre" : "Literature"   # meta-genre among, 7 possibilities
-        },                           # ["Literature", "Science, Craft & Essay", "Undefined", "Religion", "Poetry", "Theater", "Ancien"]
+        },                           # ["Literature", "Science, Craft & Essay", "Undefined", "Religion", "Poetry", "Theater", "Ancient"]
      "snr": 5.391,                   # Signal to Noise Ratio computed on the basis of Voice Activity Detection
      "voice_activity": [             # onsets and offsets (in seconds) of each VAD segments
       [
