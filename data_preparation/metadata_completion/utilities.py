@@ -1,7 +1,6 @@
 from pathlib import Path
 import pickle
 import json
-import numpy as np
 import torchaudio
 import progressbar
 import argparse
@@ -10,9 +9,13 @@ import matplotlib
 matplotlib.use('agg')
 
 
-def get_all_metadata(path_dir):
-    return [f for f in os.listdir(path_dir) if len(f) > 14 and
-            f[-14:] == "_metadata.json"]
+def get_all_metadata(path_dir, suffix="_metadata.json"):
+    out = []
+    for root, dirs, filenames in os.walk(path_dir):
+        for f in filenames:
+            if f.endswith(suffix):
+                out.append(os.path.join(root, f))
+    return out
 
 
 def get_base_name_from_metadata(path):
@@ -38,24 +41,6 @@ def get_speaker_data_name(pathMetadata):
 def getJSON(pathJSON):
     with open(pathJSON, 'rb') as file:
         return json.load(file)
-
-
-def hasSpeakerData(pathSpeakerdata):
-
-    if not os.path.isfile(pathSpeakerdata):
-        return False
-
-    with open(pathSpeakerdata, 'rb') as file:
-        data = json.load(file)
-
-    if data["names"] is None or data["readers"] is None:
-        return False
-
-    for item in data["readers"]:
-        if item is None:
-            return False
-
-    return True
 
 
 def get_updated_metadata(update, path_dir_in, path_dir_out, tag):
@@ -121,92 +106,6 @@ def load_cache(path_cache, fallback_function, args=None,
     return out
 
 
-def getAllFileMultiVersion(path_dir, list_metadata):
-
-    output = []
-    for metadata_name in list_metadata:
-        fullPath = os.path.join(path_dir, metadata_name)
-
-        with open(fullPath, 'rb') as file:
-            genre = json.load(file)["genre"]
-
-        if genre is None:
-            continue
-
-        if "Multi-version (Weekly and Fortnightly poetry)" in genre:
-            output.append(metadata_name)
-
-    return output
-
-
-def getFilesWithTag(path_dir, list_metadata, tagName, tagValues):
-
-    output = []
-    for metadata_name in list_metadata:
-        fullPath = os.path.join(path_dir, metadata_name)
-
-        with open(fullPath, 'rb') as file:
-            tagData = json.load(file)[tagName]
-
-        if not isinstance(tagData, list):
-            tagData = [tagData]
-
-        if len(set(tagValues).intersection(set(tagData))) > 0:
-            output.append(metadata_name)
-
-    return output
-
-
-def getFilesWithWordInTitle(path_dir, list_metadata, word):
-    output = []
-    for metadata_name in list_metadata:
-        fullPath = os.path.join(path_dir, metadata_name)
-
-        with open(fullPath, 'rb') as file:
-            title = json.load(file)["title"].lower()
-
-        if title.find(word) >= 0:
-            output.append(metadata_name)
-
-    return output
-
-
-def getFilesStats(path_dir, list_metadata):
-
-    hasZip = 0
-    hasTxt = 1
-    hasSpeaker = 2
-
-    nFiles = len(list_metadata)
-
-    statsArray = np.zeros((nFiles, 3), dtype=int)
-    index = 0
-
-    for metadataFile in list_metadata:
-
-        zip = get_zip_name(metadataFile)
-        statsArray[index][hasZip] = int(
-            os.path.isfile(os.path.join(path_dir, zip)))
-
-        txt = get_txt_name(metadataFile)
-        statsArray[index][hasTxt] = int(
-            os.path.isfile(os.path.join(path_dir, txt)))
-
-        spe = get_speaker_data_name(metadataFile)
-        statsArray[index][hasSpeaker] = int(
-            hasSpeakerData(os.path.join(path_dir, spe)))
-
-        index += 1
-
-    print(f'Number of files : {index}')
-    print(f'Has zip data : {np.sum(statsArray[:, hasZip]) / float(index)}')
-    print(f'Has txt data : {np.sum(statsArray[:, hasTxt]) / float(index)}')
-    print(
-        f'Has speaker data : {np.sum(statsArray[:, hasSpeaker]) / float(index)}')
-    print(
-        f'Has all: {np.sum(statsArray[:,0] * statsArray[:,1] * statsArray[:,2] > 0) / float(index)}')
-
-
 def strToHours(inputStr):
 
     hours, minutes, sec = map(float, inputStr.split(':'))
@@ -233,7 +132,7 @@ def getTotalTime(path_dir, list_metadata):
     return totTime
 
 
-def getSpeakers(pathSpeakerdata):
+def get_speakers(pathSpeakerdata):
 
     with open(pathSpeakerdata, 'rb') as file:
         data = json.load(file)
@@ -250,13 +149,13 @@ def getSpeakers(pathSpeakerdata):
     return outData
 
 
-def getAllSpeakers(path_dir, list_metadata):
+def get_all_speakers(path_dir, list_metadata):
 
     outSpeakers = set()
     for metadata in list_metadata:
 
         fullPath = os.path.join(path_dir, get_speaker_data_name(metadata))
-        outSpeakers |= getSpeakers(fullPath)
+        outSpeakers |= get_speakers(fullPath)
 
     return outSpeakers
 
@@ -309,105 +208,42 @@ def get_speaker_data(path_dir, list_metadata, pathWav):
     return speakerTalk, multiples
 
 
-def get_speaker_hours_data(path_dir, list_metadata, pathWav):
+def get_speaker_hours_data(path_dir, list_metadata, audio_extension):
 
     speakerTalk = {}
     nData = len(list_metadata)
-    allSizes = []
-    multiples = 0
 
     bar = progressbar.ProgressBar(maxval=nData)
     bar.start()
-    for nM, metadataName in enumerate(list_metadata):
 
-        bar.update(nM)
-        zipName = get_zip_name(metadataName)
-        wavName = zipName.replace("64kb_mp3.zip", "wav")
-        speakerData = getJSON(os.path.join(path_dir,
-                                           get_speaker_data_name(metadataName)))
+    for index, name_metadata in enumerate(list_metadata):
+        bar.update(index)
+        pathMetadata = os.path.join(path_dir, name_metadata)
+        with open(pathMetadata, 'rb') as file:
+            locMetadata = json.load(file)
 
-        dirWav = os.path.join(pathWav, wavName)
-        if not os.path.isdir(dirWav):
-            continue
+        speaker_name = locMetadata['speaker']
 
-        listWav = [f'{f}.wav' for f in speakerData["names"]]
+        path_audio_data = os.path.splitext(pathMetadata)[0] + audio_extension
 
-        for index, wavFile in enumerate(listWav):
+        info = torchaudio.info(path_audio_data)[0]
+        totAudio = info.length / (info.rate * 3600.)
 
-            locPath = os.path.join(dirWav, wavFile)
-            if not os.path.isfile(locPath):
-                continue
+        if speaker_name is None:
+            speaker_name = 'null'
 
-            info = torchaudio.info(locPath)
-            size = (info[0].length / info[0].rate) / 3600
+        if speaker_name not in speakerTalk:
+            speakerTalk[speaker_name] = 0
 
-            speakers = speakerData['readers'][index]
-
-            if speakers is None:
-                speakers = ['null']
-
-            allSizes.append(size)
-
-            if len(speakers) > 1:
-                multiples += size
-
-            for IDspeaker in speakers:
-                if IDspeaker not in speakerTalk:
-                    speakerTalk[IDspeaker] = 0
-
-                speakerTalk[IDspeaker] += size
+        speakerTalk[speaker_name] += totAudio
 
     bar.finish()
-    print(f"Multiple size {multiples}")
 
     return speakerTalk
 
 
-def getMissingTranscriptList(path_dir, list_metadata):
-
-    output = []
-    for nM, metadataName in enumerate(list_metadata):
-
-        txtName = get_txt_name(metadataName)
-        if not os.path.isfile(os.path.join(path_dir, txtName)):
-            output.append(metadataName)
-
-    return output
-
-
-def count(path_dir, list_metadata, key):
-
-    output = []
-    nData = len(list_metadata)
-    bar = progressbar.ProgressBar(maxval=nData)
-    bar.start()
-    for nM, metadataName in enumerate(list_metadata):
-
-        bar.update(nM)
-        fullPath = os.path.join(path_dir, metadataName)
-        with open(fullPath, 'rb') as file:
-            data = json.load(file)
-
-        urlTextSource = data["url_text_source"]
-        if urlTextSource.find(key) >= 0:
-            output.append((metadataName, urlTextSource))
-
-    bar.finish()
-    return output
-
-
-def getStatus(path_dir, list_metadata):
-
-    nTextData = 0
-    for item in list_metadata:
-        textFileName = get_txt_name(item)
-        if os.path.isfile(os.path.join(path_dir, textFileName)):
-            nTextData += 1
-
-    print(f"{nTextData} text data found for {len(list_metadata)} items")
-
-
-def get_hour_tag_repartition(path_dir, list_metadata, tagName, pathWav):
+def get_hour_tag_repartition(path_dir, list_metadata, tagName,
+                             audio_extension):
 
     nItems = len(list_metadata)
     tags = {}
@@ -421,23 +257,12 @@ def get_hour_tag_repartition(path_dir, list_metadata, tagName, pathWav):
         with open(pathMetadata, 'rb') as file:
             locMetadata = json.load(file)
 
-        value = locMetadata[tagName]
+        value = locMetadata['book_meta'][tagName]
 
-        # Get the number of hours associated to theses data
-        baseName = get_wav_name(name_metadata)
+        path_audio_data = os.path.splitext(pathMetadata)[0] + audio_extension
 
-        path_dirWav = os.path.join(pathWav, baseName)
-
-        if not os.path.isdir(path_dirWav):
-            continue
-
-        wavList = [f for f in os.listdir(path_dirWav)
-                   if os.path.splitext(f)[1] == ".wav"]
-
-        totAudio = 0
-        for item in wavList:
-            info = torchaudio.info(os.path.join(path_dirWav, item))[0]
-            totAudio += info.length / (info.rate * 3600.)
+        info = torchaudio.info(path_audio_data)[0]
+        totAudio = info.length / (info.rate * 3600.)
 
         if value is None:
             value = 'null'
@@ -460,39 +285,6 @@ def get_tag_list(tagStats):
     out = set()
     for x in tagStats:
         out = out.union(set(x.split('+')))
-    return out
-
-
-def get_tags_dependencies(tagStats, tagList):
-
-    out = {x: {} for x in tagList}
-
-    unique_symbol = 'unique'
-    assert(unique_symbol not in tagList)
-
-    for key, val in tagStats.items():
-
-        tagList = key.split('+')
-        nTags = len(tagList)
-
-        if nTags == 1:
-            tag = tagList[0]
-            if unique_symbol not in out[tag]:
-                out[tag][unique_symbol] = 0
-            out[tag][unique_symbol] += val
-
-        else:
-            for i in range(nTags):
-                ti = tagList[i]
-                for j in range(i+1, nTags):
-                    tj = tagList[j]
-                    if ti not in out[tj]:
-                        out[tj][ti] = 0
-                    if tj not in out[ti]:
-                        out[ti][tj] = 0
-
-                    out[ti][tj] += val
-                    out[tj][ti] += val
     return out
 
 
@@ -538,38 +330,6 @@ def remove_multiple_tags(tag_str, order):
     return order[min([order.index(t) for t in tag_list])]
 
 
-def get_txt_status(path_dir, list_metadata):
-    from HathitrustParser import isHathitrustUrl
-
-    bar = progressbar.ProgressBar(maxval=len(list_metadata))
-    bar.start()
-    output = {}
-
-    for index, name_metadata in enumerate(list_metadata):
-        bar.update(index)
-        path_metadata = os.path.join(path_dir, name_metadata)
-        pathTxt = os.path.join(path_dir, get_txt_name(name_metadata))
-
-        if not os.path.isfile(pathTxt):
-            status = 'absent'
-
-        else:
-            with open(path_metadata, 'rb') as file:
-                url = json.load(file)["url_text_source"]
-
-            if url is None:
-                status = 'absent'
-            elif isHathitrustUrl(url):
-                status = 'noisy'
-            else:
-                status = 'clean'
-
-        output[name_metadata] = status
-
-    bar.finish()
-    return output
-
-
 def get_metdata_from_id(path_dir, list_metadata, ID):
 
     for index, name_metadata in enumerate(list_metadata):
@@ -598,7 +358,7 @@ if __name__ == "__main__":
         print("*"*50)
         list_metadata = get_all_metadata(args.path_dir)
         print(f"{len(list_metadata)} books found")
-        speakerList = getAllSpeakers(args.path_dir, list_metadata)
+        speakerList = get_all_speakers(args.path_dir, list_metadata)
         print(f"{len(speakerList)} speakers")
         time = getTotalTime(args.path_dir, list_metadata)
         print(f"{time} hours of data")
