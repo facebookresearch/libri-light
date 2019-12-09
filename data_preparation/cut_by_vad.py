@@ -13,8 +13,8 @@ def save(seq, fname, index):
     sf.write(file_name, output, samplerate=16000)
 
 
-def cut_sequence(pathSeq, vad, path_out, target_len_sec):
-    data, samplerate = sf.read(pathSeq)
+def cut_sequence(path, vad, path_out, target_len_sec):
+    data, samplerate = sf.read(path)
 
     assert len(data.shape) == 1
     assert samplerate == 16000
