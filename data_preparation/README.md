@@ -34,7 +34,7 @@ This will construct two png and a .json file
 
 Each file may be rather long and may not fit into memory.  As a final step, we provide a script to cut the files into roughly 60sec sequences obtained by concatenating consecutive voice activity chunks.
 
-     python cut_by_vad.py
+     python cut_by_vad.py --input_dir INPUT_DIR --output_dir OUTPUT_DIR
 
 
 ### 2. Get the limited-supervision train data
