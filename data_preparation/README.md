@@ -37,7 +37,7 @@ Each file may be rather long and may not fit into memory.  As a final step, we p
      python cut_by_vad.py
 
 
-### 2. The limited supervision train data
+### 2. Get the limited-supervision train data
 
 The limited supervision rests on librispeech. If you do not already have it, you should first download librispeech:
 
@@ -51,7 +51,7 @@ Then run the following script:
 
        make_limited_train/split train-clean-100 train-other-500
 
-### 3. The dev and test sets 
+### 3. Get the dev and test sets (for evaluation) 
 
 These are the standard librispeech dev and test sets. They can be gotten at the following address:
 
