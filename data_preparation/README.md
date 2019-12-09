@@ -41,8 +41,9 @@ In `OUTPUT_DIR`, there will be the same structure as above, but each file_name d
 
 ### 2. Get the limited-supervision train data
 
-The limited supervision training sets are built on Librispeech. They consist in 10h, 1h, and 10 minute cuts with orthographic transciptions and aligned phoneme transcriptions, which can be used to train small models or fine-tune pretrained ones. This can be downloaded [here, 0.6 GB](https://dl.fbaipublicfiles.com/librilight/data/librispeech_finetuning.tgz).
+The limited supervision training sets are built on Librispeech. They consist in 10h, 1h, and 10 minute splits with orthographic transciptions and aligned phoneme transcriptions, which can be used to train small models or fine-tune pretrained ones. This can be downloaded here:
 
+-  [librispeech_finetuning.tgz  (10 hours, 0.6 GB)](https://dl.fbaipublicfiles.com/librilight/data/librispeech_finetuning.tgz)   
 The directory structure is the following:
       
       1h/        # data of the 1h split (made up of 6 folds of 10 min)
@@ -58,6 +59,8 @@ The directory structure is the following:
          other/     # 12 speakers, other
       phones/    # phoneme alignment for all of the files
      
+The 10h split is made by combining the data from the `9h/` and the `1h` directories. The 1h split is itself made of 6 folds of 10 min splits. The `phone/` directory contains the frame-wise phoneme transcription of the various splits (the IPA phone mappings are in `phone_mapping.json`). There is also the phoneme transcription of the librispeech dev and test sets.  
+
 
 Alternatively, you can reconstruct this dataset by downloading by hand librispeech and running the scripts in `rebuild_limited_train/`.
 
