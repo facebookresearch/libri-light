@@ -29,7 +29,7 @@ if __name__ == "__main__":
     path_cache_metadata = path_cache / "metadata.pkl"
     list_metadata = ut.load_cache(path_cache_metadata,
                                   ut.get_all_metadata,
-                                  args=(args.path_metdata,),
+                                  args=(args.path_metadata,),
                                   ignore_cache=args.ignore_cache)
 
     # Get the genre statistics
@@ -37,7 +37,7 @@ if __name__ == "__main__":
     path_genre_stats = path_cache / "meta_genre_stats.json"
     genre_data = ut.load_cache(path_genre_stats,
                                ut.get_hour_tag_repartition,
-                               args=(args.path_metdata, list_metadata,
+                               args=(args.path_metadata, list_metadata,
                                      "meta_genre", args.path_wav),
                                ignore_cache=args.ignore_cache)
 
@@ -52,7 +52,7 @@ if __name__ == "__main__":
     path_speaker_cache = path_cache / "speaker_stats.json"
     speaker_data = ut.load_cache(path_speaker_cache,
                                  ut.get_speaker_hours_data,
-                                 args=(args.path_metdata, list_metadata,
+                                 args=(args.path_metadata, list_metadata,
                                        args.path_wav))
 
     speaker_hours = [x for _, x in speaker_data.items()]
