@@ -46,10 +46,14 @@ The limited supervision rests on librispeech. If you do not already have it, you
 
        mkdir librispeech
        cd librispeech
-       wget 
+       wget http://www.openslr.org/resources/12/train-clean-100.tar.gz # train-clean-100 of librispeech 
+       wget http://www.openslr.org/resources/12/train-other-500.tar.gz # train-other-500 of librispeech
+
 
 Then run the following script:
 
+  
+       make_limited_train/split train-clean-100 train-other-500
 
 
 ## Cut the data into segments
