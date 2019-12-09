@@ -8,6 +8,8 @@ meta-data construction, and dataset filtering and splitting.
 
 ## Download the data
 
+### The unlabelled data
+
 The unlabelled data is spit into 3 subsets of increasing lengths (small, medium, large). These splits are done to enable doing experiments on smaller amounts of data (also, downloading the large dataset can take about one day). 
 
 -  [unlab_small.tar  (  577 hours,  35 GB, 1135)](https://dl.fbaipublicfiles.com/librilight/data/unlab_small.tar)   
@@ -37,8 +39,16 @@ Once the dataset is downloaded and "untarred", you can check its statistics with
 
      python build_all_stats.py unlab_data unlab_data unlab_stats
      
-     
-## Do the stats
+
+### The limited supervision train data
+
+The limited supervision rests on librispeech. If you do not already have it, you should first download librispeech:
+
+       mkdir librispeech
+       cd librispeech
+       wget 
+
+Then run the following script:
 
 
 
