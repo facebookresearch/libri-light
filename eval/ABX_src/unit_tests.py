@@ -54,9 +54,12 @@ class testSingularityNormalization(unittest.TestCase):
         x = torch.tensor([[[1., 0., 0., 0.], [0., 0., 0., 0.]],
                           [[0., 0., -1., 0.], [0.5, -0.5, 0.5, -0.5]]])
         y = torch.tensor(
-            [[[-0.5, -0.5, -0.5, 0.5], [0., 0., 0., 0.], [0., 1., 0., 0.]]])
-        norm_x = abx_iterators.normalize_with_singularity(x)
-        norm_y = abx_iterators.normalize_with_singularity(y)
+            [[-0.5, -0.5, -0.5, 0.5], [0., 0., 0., 0.], [0., 1., 0., 0.]])
+        norm_x = []
+        for i in range(2):
+            norm_x.append(abx_iterators.normalize_with_singularity(x[i]).view(1, 2, 5))
+        norm_x = torch.cat(norm_x, dim=0)
+        norm_y = abx_iterators.normalize_with_singularity(y).view(1, 3, 5)
         dist = abx_group_computation.get_cosine_distance_batch(norm_x, norm_y)
 
         eq_(dist.size(), (2, 1, 2, 3))
@@ -184,7 +187,7 @@ class testABXFeatureLoader(unittest.TestCase):
     def dummy_feature_maker(path_file, *args):
         data = torch.tensor(np.load(path_file))
         assert(len(data.size()) == 1)
-        return data.view(1, -1, 1)
+        return data.view(-1, 1)
 
     def testBaseLoader(self):
         seqList = [('2107', 'test_data/2107.npy'),
