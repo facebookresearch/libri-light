@@ -13,7 +13,11 @@ To install:
 
      git clone https://github.com/facebookresearch/libri-light
 
+Then, if you have conda, install the requirements with:
 
+     conda env create -f environment.yml && conda activate libri-light
+
+If you don't have conda you can install it from [here](https://docs.anaconda.com/anaconda/install/).
 
 ## Goals and structure
 
