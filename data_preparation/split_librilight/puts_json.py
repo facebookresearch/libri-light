@@ -230,13 +230,11 @@ def get_args():
         "Prepares jsons with meta information per single audiofile. "
         "The jsons are placed alongside with the audiofiles and have the same name")
 
-    parser.add_argument('--librivox_dir', type=str,
-                        default='/checkpoint/kharitonov/LibriVox_updated_metadata/')
+    parser.add_argument('--librivox_dir', type=str, required=True)
     parser.add_argument('--vad_preprocessed', type=str, default='vads.json')
     parser.add_argument('--snr_preprocessed', type=str,
-                        default='/checkpoint/kharitonov/unsupervised/vad_based_snr_all.tsv')
-    parser.add_argument('--librivox_processed', type=str,
-                        default='/checkpoint/kharitonov/librilight_converted_flac/')
+                        default='vad_based_snr_all.tsv')
+    parser.add_argument('--librivox_processed', type=str, required=True)
     parser.add_argument('--test_speakers', type=str,
                         default='test_speakers.json')
     parser.add_argument('--title_duplicates', type=str,
