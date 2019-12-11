@@ -108,18 +108,38 @@ And convert them from .mp3 to flac:
 python unzip_and_convert.py convert $OUTPUT_MP3 -o $OUTPUT_FLAC -f .flac
 ```
 
-To extract the VAD, run: 
+### Running Voice Activity Detection and SNR Computation
+
+Voice Activity Detection (VAD) is accomplished using [wav2letter](https://github.com/facebookresearch/wav2letter/). Once you've [downloaded and installed wav2letter](https://github.com/facebookresearch/wav2letter/wiki/General-building-instructions) and its [dependencies](https://github.com/facebookresearch/wav2letter/wiki/Dependencies), make sure the [VAD and Audio Analysis suite](https://github.com/facebookresearch/wav2letter/tree/master/tools#voice-activity-detection-and-audio-analysis) is built.
+
+#### Prepare the Input List file
+The wav2letter VAD pipeline expects an [input list file](https://github.com/facebookresearch/wav2letter/wiki/Data-Preparation#audio-and-transcriptions-data) that contains lines with ordered tuples of `[sample ID] [path to sample] [duration]` for each sample.
+
+Run `make_vad_inputs.py` to prepare the data in a list file format for VAD input:
 ```console
-please explain here
+python make_vad_inputs.py \
+    --path_db [path to dataset] \
+    --extension [audio extension] \
+    --path_out [path to output file]
 ```
+If `--path_out` is not specified, each  will be placed in the same directory from which the sample originated.
+
+#### Running VAD
+
+To extract the VAD, given some input list file, follow the instructions to [**run the analysis script**](https://github.com/facebookresearch/wav2letter/blob/master/tools/README.md#voice-activity-detection-and-audio-analysis) with the list file generated in the previous step as the file passed to `--test`.
+
+If `make_vad_inputs.py` is used to generate the input list file, then the [analysis output files](https://github.com/facebookresearch/wav2letter/blob/master/tools/README.md#voice-activity-detection-and-audio-analysis) for each sample will be palced in the same direcotry as is the sample's original audio.
+
+### Running SNR
 
 To extract the SNR, run: 
 ```console
 please explain here
 ```
 
+### Preparing Metadata Files
 
-To compute the metadata file:
+To create metadata files:
 ```console
 python complete_metadata.py --path_metadata $OUTPUT_DOWNLOAD --out_dir $OUTPUT_FLAC --ignore_cache
 ```
