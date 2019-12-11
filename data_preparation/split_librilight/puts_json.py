@@ -194,9 +194,9 @@ def process_dir(book_name, dir_name, name2meta, voice_activities, snr_table, tes
         data['voice_activity'] = [(round(x[0], 4), round(x[1], 4))
                                   for x in voice_activities[normalized_book_name][fname]]
 
-        # with open(target, 'w') as fout:
-        #    out = json.dumps(data, indent=1)
-        #    fout.write(out)
+        with open(target, 'w') as fout:
+            out = json.dumps(data, indent=1)
+            fout.write(out)
 
     return errors
 
@@ -235,7 +235,6 @@ def get_duplicates(path):
         duplicates = json.loads(f.read())
 
     duplicates_to_remove = set()
-    suffix_len = len('_metadata.json')
 
     for duplicate_cluster in duplicates:
         for d in duplicate_cluster[1:]:
