@@ -36,3 +36,15 @@ Sample command:
 --flagsfile=</path/to/your>/libri-light/TDS/experiments/config/decoding/10h+pseudo-label_letter_37M_TDS.cfg \
 --sclite=</path/to/your/output_folder>
 ```
+
+#### Pretrained models
+| Supervised data | LibriVox | Target unit | Architecture | Model |
+| - | - | - | - | - |
+| 10 hours | Y | letter | 37M | [10h+pseudo-label_letter_37M_TDS.bin](https://dl.fbaipublicfiles.com/librilight/TDS_pseudo_label_checkpoints/10h%2Bpseudo-label_letter_37M_TDS.bin) |
+| 10 hours | Y | phonemes | 37M | [10h+pseudo-label_phone_37M_TDS.bin](https://dl.fbaipublicfiles.com/librilight/TDS_pseudo_label_checkpoints/10h%2Bpseudo-label_phone_37M_TDS.bin) |
+| 10 hours | N | letter | 20M | [10h_letter_20M_TDS.bin](https://dl.fbaipublicfiles.com/librilight/TDS_pseudo_label_checkpoints/10h_letter_20M_TDS.bin) |
+| 10 hours | N | phonemes | 20M | [10h_phone_20M_TDS.bin](https://dl.fbaipublicfiles.com/librilight/TDS_pseudo_label_checkpoints/10h_phone_20M_TDS.bin) |
+| 1 hour | Y | letter | 37M | [1h+pseudo-label_letter_37M_TDS.bin](https://dl.fbaipublicfiles.com/librilight/TDS_pseudo_label_checkpoints/1h%2Bpseudo-label_letter_37M_TDS.bin) |
+| 1 hour | Y | phonemes | 37M | [1h+pseudo-label_phone_37M_TDS.bin](https://dl.fbaipublicfiles.com/librilight/TDS_pseudo_label_checkpoints/1h%2Bpseudo-label_phone_37M_TDS.bin) |
+| 1 hour | N | letter | 20M | [1h_letter_20M_TDS.bin](https://dl.fbaipublicfiles.com/librilight/TDS_pseudo_label_checkpoints/1h_letter_20M_TDS.bin) |
+| 1 hour | N | phonemes | 20M | [1h_phone_20M_TDS.bin](https://dl.fbaipublicfiles.com/librilight/TDS_pseudo_label_checkpoints/1h_phone_20M_TDS.bin) |
