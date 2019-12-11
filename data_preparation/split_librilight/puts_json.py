@@ -115,9 +115,7 @@ def read_snr(fname):
     return snr_table
 
 
-def process_dir(book_name, dir_name, name2meta, voice_activities, snr_table, test_speakers, extension='*.flac'):
-
-    normalized_book_name = book_name
+def process_dir(normalized_book_name, dir_name, name2meta, voice_activities, snr_table, test_speakers, extension='*.flac'):
     speaker2file = dict(zip(name2meta[normalized_book_name]['speaker_data']
                             ['names'], name2meta[normalized_book_name]['speaker_data']['readers']))
 
