@@ -13,27 +13,23 @@ from common import canoninize_name, parse_downloaded_jsons
 @dataclasses.dataclass
 class BookError:
     no_match_snr: Set[str] = dataclasses.field(default_factory=set)
-    no_match_vad: Set[str] = dataclasses.field(default_factory=set)
     no_match_speaker: Set[str] = dataclasses.field(default_factory=set)
     multiple_speakers: Set[str] = dataclasses.field(default_factory=set)
-    name_collision: Set[str] = dataclasses.field(default_factory=set)
     test_speakers: Set[str] = dataclasses.field(default_factory=set)
     fuzzy_matched_speaker: Set[str] = dataclasses.field(default_factory=set)
     ok: int = 0
 
     def update(self, other):
         self.no_match_snr.update(other.no_match_snr)
-        self.no_match_vad.update(other.no_match_vad)
         self.no_match_speaker.update(other.no_match_speaker)
         self.multiple_speakers.update(other.multiple_speakers)
-        self.name_collision.update(other.name_collision)
         self.test_speakers.update(other.test_speakers)
         self.fuzzy_matched_speaker.update(other.fuzzy_matched_speaker)
         self.ok += other.ok
 
     def __str__(self):
         return \
-            f"ok: {self.ok}, no_match_snr: {len(self.no_match_snr)}, no_match_vad: {len(self.no_match_vad)}, " + \
+            f"ok: {self.ok}, no_match_snr: {len(self.no_match_snr)}, " + \
             f"no_match_speaker: {len(self.no_match_speaker)}, multiple_speakers: {len(self.multiple_speakers)}, " + \
             f"fuzzy_matched_speaker: {len(self.fuzzy_matched_speaker)}"
 
@@ -86,31 +82,28 @@ def read_snr(fname):
     return snr_table
 
 
-def process_dir(normalized_book_name, dir_name, name2meta, voice_times, voice_activities, snr_table, test_speakers, extension='*.flac'):
+def process_dir(book_name, dir_name, name2meta, voice_activities, snr_table, test_speakers, extension='*.flac'):
+
+    normalized_book_name = book_name
     speaker2file = dict(zip(name2meta[normalized_book_name]['speaker_data']
                             ['names'], name2meta[normalized_book_name]['speaker_data']['readers']))
 
     assert normalized_book_name in name2meta
-    assert normalized_book_name in snr_table
-    assert normalized_book_name in voice_times
+    assert normalized_book_name in snr_table, normalized_book_name 
+    assert normalized_book_name in voice_activities
 
     errors = BookError()
 
     for file_name in dir_name.glob(extension):
+        debug_fname = normalized_book_name + '/' + file_name.name
         fname = file_name.stem
-        if not fname.endswith('_64kb'):
-            errors.name_collision.add(fname)
-            continue
-
-        fname = fname[:-5]
+        fname = fname[:-5] # _64kb
 
         if fname not in snr_table[normalized_book_name]:
-            errors.no_match_snr.add(fname)
+            errors.no_match_snr.add(debug_fname)
             continue
 
-        if fname not in voice_times[normalized_book_name]:
-            errors.no_match_vad.add(fname)
-            continue
+        assert fname in voice_activities[normalized_book_name]
 
         if fname in speaker2file:
             speaker = speaker2file[fname]
@@ -118,21 +111,23 @@ def process_dir(normalized_book_name, dir_name, name2meta, voice_times, voice_ac
             # TODO: check does not lead to errors
             match = [z for z in speaker2file.keys() if z.startswith(fname)]
             if len(match) != 1:
-                errors.no_match_speaker.add(fname)
+                errors.no_match_speaker.add(debug_fname)
                 continue
+            else:
+                errors.fuzzy_matched_speaker.add(debug_fname)
             speaker = speaker2file[match[0]]
 
         if speaker is None:
-            errors.no_match_speaker.add(fname)
+            errors.no_match_speaker.add(debug_fname)
             continue
 
         if len(speaker) != 1:
-            errors.multiple_speakers.add(fname)
+            errors.multiple_speakers.add(debug_fname)
             continue
 
         speaker = speaker[0]
         if int(speaker) in test_speakers:
-            errors.test_speakers.add(fname)
+            errors.test_speakers.add(debug_fname)
             continue
 
         errors.ok += 1
@@ -148,6 +143,7 @@ def process_dir(normalized_book_name, dir_name, name2meta, voice_times, voice_ac
         del data['meta']
         data['book_meta'] = meta
 
+        assert fname in snr_table[normalized_book_name], (fname, normalized_book_name)
         data['snr'] = round(snr_table[normalized_book_name][fname], 4)
         data['voice_activity'] = [(round(x[0], 4), round(x[1], 4))
                                   for x in voice_activities[normalized_book_name][fname]]
@@ -192,9 +188,11 @@ def get_duplicates(path):
         duplicates = json.loads(f.read())
 
     duplicates_to_remove = set()
+    suffix_len = len('_metadata.json')
 
     for duplicate_cluster in duplicates:
         for d in duplicate_cluster[1:]:
+            d = d[:-suffix_len]
             duplicates_to_remove.add(d)
     return duplicates_to_remove
 
@@ -210,11 +208,10 @@ if __name__ == '__main__':
 
     snr_table = read_snr(args.snr_preprocessed)
     voice_times, voice_activities = get_voice_activities(args.vad_preprocessed)
-    name2json = parse_downloaded_jsons(args.librivox_dir, duplicates_to_remove)
+    name2json = parse_downloaded_jsons(args.librivox_dir)#, duplicates_to_remove)
 
     total, matched = 0, 0
     unmatched_names = set()
-    test_names = set()
 
     dir_paths = list(pathlib.Path(args.librivox_processed).glob('*'))
 
@@ -229,37 +226,36 @@ if __name__ == '__main__':
         book_name = str(dir_path.name)
         normalized_book_name = canoninize_name(book_name)
 
-        if normalized_book_name in name2json:
+        if book_name in duplicates_to_remove:
+            pass # unmatched_names.add(normalized_book_name)
+        elif normalized_book_name in name2json:
             matched += 1
             errors = process_dir(normalized_book_name, dir_path, name2json,
-                                 voice_times, voice_activities, snr_table, test_speakers)
+                                 voice_activities, snr_table, test_speakers)
             aggregated_errors.update(errors)
         else:
-            unmatched_names.add(normalized_book_name)
+            unmatched_names.add(book_name)
 
     print('Done, flushing stats...')
-    with open('processing_results.json', 'w') as f:
+    with open('processing_results_nocanon.json', 'w') as f:
         results = {
             'unmatched_books': list(unmatched_names),
-            'test_books': list(test_names),
             'file_stats': {
                 'ok': aggregated_errors.ok,
                 'no_match_speaker': len(aggregated_errors.no_match_speaker),
-                'no_match_vad': len(aggregated_errors.no_match_vad),
                 'no_match_snr': len(aggregated_errors.no_match_snr),
-                'name_collision': len(aggregated_errors.name_collision),
                 'test_speakers': len(aggregated_errors.test_speakers),
                 'fuzzy_matched_speaker': len(aggregated_errors.fuzzy_matched_speaker),
+                'multiple_speakers': len(aggregated_errors.multiple_speakers),
             },
             'files_excluded': {
                 'no_match_speaker': list(aggregated_errors.no_match_speaker),
-                'no_match_vad': list(aggregated_errors.no_match_vad),
                 'no_match_snr': list(aggregated_errors.no_match_snr),
-                'name_collision': list(aggregated_errors.name_collision),
                 'test_speakers': list(aggregated_errors.test_speakers),
                 'fuzzy_matched_speaker': list(aggregated_errors.fuzzy_matched_speaker),
-
+                'multiple_speakers': list(aggregated_errors.multiple_speakers),
             }
         }
 
+        print(aggregated_errors)
         f.write(json.dumps(results, indent=1))
