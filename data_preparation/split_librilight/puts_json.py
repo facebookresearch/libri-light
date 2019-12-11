@@ -272,13 +272,10 @@ if __name__ == '__main__':
     aggregated_errors = BookError()
 
     for dir_path in dir_paths:
-        total += 1
-
         book_name = str(dir_path.name)
         normalized_book_name = normalize(book_name)
 
         if normalized_book_name in name2json:
-            matched += 1
             errors = process_dir(normalized_book_name, dir_path, name2json,
                                  voice_activities, snr_table, test_speakers)
             aggregated_errors.update(errors)
