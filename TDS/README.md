@@ -5,7 +5,9 @@ This repository provides codes to reproduce TDS baselines in the paper. You shou
 ## Data
 - Two lists of supervised training data with 10 hours and 1 hour.
 - Two sets of tokens for phonemes and characters.
-- Two lexicons to map words to phonemes and characters.
+- Two lexicons to map words to phonemes and characters:
+  - [Letter lexicon](https://dl.fbaipublicfiles.com/librilight/data/tds_data/letter.lex)
+  - [Phone lexicon](https://dl.fbaipublicfiles.com/librilight/data/tds_data/phone.lex)
 
 ## Experiments
 ### Model Architectures
