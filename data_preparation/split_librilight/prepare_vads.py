@@ -11,7 +11,8 @@ import multiprocessing
 
 
 def get_args():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="Transform per-frame VAD files into segments with voice activity")
 
     parser.add_argument('--vad_root', type=str, required=True)
     parser.add_argument('--time_step_ms', type=float, default=80)
@@ -108,8 +109,8 @@ if __name__ == '__main__':
     tasks = [(x, args) for x in pathlib.Path(args.vad_root).rglob("*.vad")]
     print(f'Found {len(tasks)} vad files')
 
-    pool = multiprocessing.Pool(processes=args.n_workers)
-    fname2segments = pool.map(process, tasks)
+    with multiprocessing.Pool(processes=args.n_workers) as pool:
+        fname2segments = pool.map(process, tasks)
     fname2segments = dict(fname2segments)
 
     with open(args.output, 'w') as f:

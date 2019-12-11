@@ -9,7 +9,8 @@ import pathlib
 
 
 def get_args():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(
+        description="Prepare list of speakers that appear in Librispeech test/dev datasets")
     parser.add_argument('--librispeech_meta', type=str, required=True)
     parser.add_argument('--output', type=str, default='test_speakers.json')
 
