@@ -89,10 +89,6 @@ def cal_snr_librivox(file_name):
     return calculate_file_snr(file_name, speech_th=0.8, noise_th=0.995)
 
 
-def cal_snr_oyez(file_name):
-    return calculate_file_snr(file_name, speech_th=0.98, noise_th=0.9999)
-
-
 def mp_file_snr(lst_file, records=None, nproc=60):
     with open(lst_file, 'r') as fh:
         fnames = [line.split()[0] for line in fh]
@@ -102,14 +98,8 @@ def mp_file_snr(lst_file, records=None, nproc=60):
         fnames = set(fnames) - set(existing_fname)
     print("loaded {} file to process".format(len(fnames)), file=sys.stderr)
     pool = multiprocessing.Pool(nproc)
-    if 'oyez' in lst_file:
-        print("processing oyez format", file=sys.stderr)
-        it = pool.imap_unordered(cal_snr_oyez, fnames)
-    elif 'librivox' in lst_file:
-        print("processing librivox format", file=sys.stderr)
-        it = pool.imap_unordered(cal_snr_librivox, fnames)
-    else:
-        raise Exception("unknown dataset")
+    print("processing librivox format", file=sys.stderr)
+    it = pool.imap_unordered(cal_snr_librivox, fnames)
     st = time.time()
     cnt = 0
     for fname, snr_fields in it:
@@ -126,13 +116,14 @@ def mp_file_snr(lst_file, records=None, nproc=60):
 
 if __name__ == "__main__":
     usage = """
-    usage: python calculate_snr.py librivox.lst [snr_output.tsv for resume] \
-             > snr_output.tsv
+    example: python calculate_snr.py librivox.lst > snr_output.tsv
     """
-    if len(sys.argv) == 2:
-        mp_file_snr(sys.argv[1])
-    elif len(sys.argv) == 3:
-        mp_file_snr(sys.argv[1], sys.argv[2])
-    else:
-        print(usage)
-        sys.exit(1)
+    parser = argparse.ArgumentParser(description=usage)
+    parser.add_argument("wav_list", type=str,
+                        help="list path to wavs. oneline per file")
+    parser.add_argument("--resume_from", type=str,
+                        help="if specified, all entries in the resume-from file will be skipped")
+    parser.add_argument("--numproc", type=int, default=40,
+                        help="num of processes")
+    args = parser.parse_args()
+    mp_file_snr(args.wav_list, records=args.resume_from, nproc=args.numproc)

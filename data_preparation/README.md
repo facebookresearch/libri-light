@@ -144,9 +144,13 @@ python calculate_snr.py librivox.lst calcuated_snr.tsv > calculated_snr_leftover
 This program looks at the VAD output, classifies speech frames and non speech frames base on a dataset specific threshold, removes unclassified frames, and calculates the SNR base on (speech power / non-speech power)
 
 Prerequisite:
-- `librivox.lst` is a plain list of all wav filepath downloaded from librivox.org
+- `librivox.lst` is a plain list of all wav filepath downloaded from librivox.org, which looks like this: 
+```console
+/some/path/to/audio1.wav
+/some/path/to/audio2.wav
+```
 - you have to finish the VAD step to have generated the corresponding <wav>.vad file in the same folder as each .wav files
-- depends on whether the lst file has `librivox` or `oyez` in its filename, the program will pick a different VAD threshold for the VAD performance. If you have retrained the VAD model or running on a different dataset, looking at the histogram over some audio files to decide on the threshold is essential for good performance. 
+- If you have retrained the VAD model or running on a different dataset, looking at the histogram over some audio files to decide on the threshold is essential for good performance. 
 - wav file input is required to be 16kHz.
 
 ### Preparing Metadata Files
