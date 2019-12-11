@@ -128,7 +128,7 @@ def process_dir(normalized_book_name, dir_name, name2meta, voice_activities, snr
     for file_name in dir_name.glob(extension):
         fname = file_name.stem
         assert fname.endswith('_64kb')
-        fname = fname[:-5]
+        fname = fname[:-5]  # cut _64kb
 
         if fname not in snr_table[normalized_book_name]:
             errors.no_match_snr.add(fname)
@@ -185,12 +185,11 @@ def process_dir(normalized_book_name, dir_name, name2meta, voice_activities, snr
     return errors
 
 
-def get_voice_activities(vad_preprocessed):
+def get_voice_activities(vad_preprocessed, seconds_per_frame=80.0/1000.0):
     voice_times = {}
     voice_activities = {}
 
     total_time = 0.0
-    scaler = 80.0 / 1000
     with open(vad_preprocessed, 'r') as f:
         segments = json.loads(f.read())
 
@@ -204,12 +203,12 @@ def get_voice_activities(vad_preprocessed):
                 voice_times[dir_name] = {}
                 voice_activities[dir_name] = {}
 
-            voice_times[dir_name][fname] = v[1] * scaler
+            voice_times[dir_name][fname] = v[1] * seconds_per_frame
             voice_activities[dir_name][fname] = [
-                (round(scaler * x[0], 2), round(scaler * x[1], 2)) for x in v[0]]
+                (round(seconds_per_frame * x[0], 2), round(seconds_per_frame * x[1], 2)) for x in v[0]]
             total_time += v[1]
 
-    total_time *= scaler
+    total_time *= seconds_per_frame
     print('Total time in VAD files, hours', total_time / 60 / 60)
     return voice_times, voice_activities
 
@@ -242,6 +241,8 @@ def get_args():
                         default='test_speakers.json')
     parser.add_argument('--title_duplicates', type=str,
                         default='title_duplicates.json')
+    parser.add_argument('--millis_per_frame', type=float,
+                        default=80.0)
 
     args = parser.parse_args()
     return args
@@ -257,7 +258,8 @@ if __name__ == '__main__':
     print(f'Removing {len(duplicates_to_remove)} duplicates')
 
     snr_table = read_snr(args.snr_preprocessed)
-    voice_times, voice_activities = get_voice_activities(args.vad_preprocessed)
+    voice_times, voice_activities = get_voice_activities(
+        args.vad_preprocessed, seconds_per_frame=args.millis_per_frame/1000.0)
     name2json, n_duplicates = parse_downloaded_jsons(
         args.librivox_dir, duplicates_to_remove)
 
