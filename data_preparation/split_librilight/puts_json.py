@@ -261,7 +261,6 @@ if __name__ == '__main__':
     name2json, n_duplicates = parse_downloaded_jsons(
         args.librivox_dir, duplicates_to_remove)
 
-    total, matched = 0, 0
     unmatched_names = set()
 
     dir_paths = list(pathlib.Path(args.librivox_processed).glob('*'))
