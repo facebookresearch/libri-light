@@ -1,0 +1,22 @@
+name: libri-light
+channels:
+  - pytorch
+  - anaconda
+  - conda-forge
+  - defaults
+dependencies:
+  - pytorch
+  - torchvision
+  - cudatoolkit=9.2
+  - torchaudio
+  - numpy
+  - pysoundfile
+  - pip
+  - openblas-devel
+  - tqdm
+  - nose
+  - pip:
+    - progressbar2
+    - matplotlib
+    - torchaudio
+    - termcolor
