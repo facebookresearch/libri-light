@@ -54,25 +54,11 @@ def normalize(name):
     The normalization is done by removing the suffixes removed/added by ffmpeg.
     """
 
-    pos = name.find('.poem_')
-    if pos != -1:
-        name = name[:pos]
-        return name
-
-    pos = name.find('_librivox')
-    if pos != -1:
-        name = name[:pos]
-        return name
-
-    pos = name.find('_64kb')
-    if pos != -1:
-        name = name[:pos]
-        return name
-
-    pos = name.find('_wav')
-    if pos != -1:
-        name = name[:pos]
-        return name
+    for suffix in ['.poem_', '_librivox', '_64kb', '_wav']:
+        pos = name.find(suffix)
+        if pos != -1:
+            name = name[:pos]
+            return name
     return name
 
 
