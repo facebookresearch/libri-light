@@ -282,7 +282,7 @@ if __name__ == '__main__':
             unmatched_names.add(book_name)
 
     print('Done, flushing stats...')
-    with open('processing_results_nocanon.json', 'w') as f:
+    with open('processing_results.json', 'w') as f:
         results = aggregated_errors.as_dict()
         results['duplicate_books'] = n_duplicates
         f.write(json.dumps(results, indent=1))
