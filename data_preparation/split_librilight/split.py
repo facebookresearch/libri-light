@@ -141,7 +141,8 @@ def take_n(x, n):
 
 
 def get_args():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description='Reads a direcctory with flac/meta-data files and decides how to split them in '
+        'three nested sets, roughly balancing genres')
     parser.add_argument('--librivox_processed', type=str)
     parser.add_argument('--sampling_steps', type=int, default=3)
     parser.add_argument('--size_divisor', type=int, default=10)
