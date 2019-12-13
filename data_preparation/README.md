@@ -128,14 +128,30 @@ If `--path_out` is not specified, each  will be placed in the same directory fro
 
 To extract the VAD, given some input list file, follow the instructions to [**run the analysis script**](https://github.com/facebookresearch/wav2letter/blob/master/tools/README.md#voice-activity-detection-and-audio-analysis) with the list file generated in the previous step as the file passed to `--test`.
 
-If `make_vad_inputs.py` is used to generate the input list file, then the [analysis output files](https://github.com/facebookresearch/wav2letter/blob/master/tools/README.md#voice-activity-detection-and-audio-analysis) for each sample will be palced in the same direcotry as is the sample's original audio.
+If `make_vad_inputs.py` is used to generate the input list file, then the [analysis output files](https://github.com/facebookresearch/wav2letter/blob/master/tools/README.md#voice-activity-detection-and-audio-analysis) for each sample will be placed in the same directory as is the sample's original audio.
 
 ### Running SNR
 
 To extract the SNR, run: 
 ```console
-please explain here
+python calculate_snr.py librivox.lst > calculated_snr.tsv
 ```
+
+or if the job failed and need to resume you can run
+```console
+python calculate_snr.py librivox.lst calcuated_snr.tsv > calculated_snr_leftover.tsv
+```
+This program looks at the VAD output, classifies speech frames and non speech frames base on a dataset specific threshold, removes unclassified frames, and calculates the SNR base on (speech power / non-speech power)
+
+Prerequisite:
+- `librivox.lst` is a plain list of all wav filepath downloaded from librivox.org, which looks like this: 
+```console
+/some/path/to/audio1.wav
+/some/path/to/audio2.wav
+```
+- you have to finish the VAD step to have generated the corresponding <wav>.vad file in the same folder as each .wav files
+- If you have retrained the VAD model or running on a different dataset, looking at the histogram over some audio files to decide on the threshold is essential for good performance. 
+- wav file input is required to be 16kHz.
 
 ### Preparing Metadata Files
 
