@@ -144,6 +144,7 @@ def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('--librivox_processed', type=str)
     parser.add_argument('--sampling_steps', type=int, default=3)
+    parser.add_argument('--size_divisor', type=int, default=10)
     parser.add_argument('--debug', action='store_true')
 
     args = parser.parse_args()
@@ -183,4 +184,4 @@ if __name__ == '__main__':
                 indent=1))
 
         fnames = subselect(
-            fnames, fnames2jsons)
+            fnames, fnames2jsons, divisor=args.size_divisor)

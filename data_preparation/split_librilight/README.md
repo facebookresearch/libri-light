@@ -25,3 +25,13 @@ python puts_json.py  --librivox_dir=<librivox metadata path> --librivox_processe
 
 This command would (a) generate a file `processing_results.json` containing some diagnostic statistics, and
 (b) place json files with meta-data alongside the audio files.
+
+After that, we can decide on the data split. This command with produce three json files, each describing sets of 
+selected (nested) sets of files, each having 10x less audio-time:
+
+```console
+python split.py --librivox_processed=<directory with metadata jsons and flac files> --sampling_steps=3 --divisor=10
+```
+The produced files would be named as `split_0.json` (largest), `split_1.json` (second largest), etc. They also
+contain some rudimntary statistics of the selected data.
+
