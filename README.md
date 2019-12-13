@@ -6,7 +6,7 @@ This repo contains code associated with the Libri-light dataset which can be dow
 
     data_preparation/         # dowload code; VAD and SNR code; json generation; stats; data segmentation
     eval/                     # ABX, PER, WER (evaluation metrics on dev-clean, dev-other, test-clean, test-other)
-    TDS/                      # code, pretrained models, examples
+    TDS/                      # code, pretrained models, examples for the TDS baselines
 
 To install:
 
