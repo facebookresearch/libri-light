@@ -39,14 +39,14 @@ The [`models`](./models/README.md) directory contains pretrained [wav2letter](ht
 ## Citing
 
     @misc{librilight,
-        author = {Kahn, J and Rivière, M. and Zheng, W., and Kharitonov, E., and Xu, Q. and
+        author = {Kahn, J. and Rivière, M. and Zheng, W. and Kharitonov, E. and Xu, Q. and
          Mazaré, P.E. and Karadayi, J. and Liptchinsky, V. and Collobert, R. and Fuegen, C. and
          Likhomanenko, T. and Synnaeve, G. and Joulin, A. and Mohamed, A. and Dupoux, E.},
-        title = {{Libri-light: a (large) dataset for ASR with limited or no supervision}},
+        title = {{Libri-Light: A (Large) Dataset for ASR with Weak or No Supervision}},
         year = {2019},
         publisher = {GitHub},
         journal = {ArXiv repository},
-        howpublished = {\url{https://GitHub.com/FacebookResearch/Libri-light}},
+        howpublished = {\url{https://github.com/facebookresearch/libri-light}},
     }
 
 ## License
