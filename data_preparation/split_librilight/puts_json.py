@@ -115,13 +115,13 @@ def read_snr(fname):
     return snr_table
 
 
-def process_dir(normalized_book_name, dir_name, name2meta, voice_activities, snr_table, test_speakers, extension='*.flac'):
+def process_dir(normalized_book_name, dir_name, name2meta, file_times, voice_activities, snr_table, test_speakers, extension='*.flac'):
     speaker2file = dict(zip(name2meta[normalized_book_name]['speaker_data']
                             ['names'], name2meta[normalized_book_name]['speaker_data']['readers']))
 
     assert normalized_book_name in name2meta
     assert normalized_book_name in snr_table, normalized_book_name
-    assert normalized_book_name in voice_activities
+    assert normalized_book_name in voice_activities and normalized_book_name in file_times
 
     errors = BookError()
 
@@ -135,6 +135,7 @@ def process_dir(normalized_book_name, dir_name, name2meta, voice_activities, snr
             continue
 
         assert fname in voice_activities[normalized_book_name]
+        assert fname in file_times[normalized_book_name]
 
         if fname in speaker2file:
             speakers = speaker2file[fname]
@@ -166,6 +167,7 @@ def process_dir(normalized_book_name, dir_name, name2meta, voice_activities, snr
         data = copy.deepcopy(name2meta[normalized_book_name])
         del data['speaker_data']
         data['speaker'] = speaker
+        data['file_length_sec'] = file_times[normalized_book_name][fname]
         del data['meta']['totaltime']
         del data['meta']['trancription_status']
         meta = data['meta']
@@ -186,7 +188,7 @@ def process_dir(normalized_book_name, dir_name, name2meta, voice_activities, snr
 
 
 def get_voice_activities(vad_preprocessed, seconds_per_frame=80.0/1000.0):
-    voice_times = {}
+    file_times = {}
     voice_activities = {}
 
     total_time = 0.0
@@ -199,18 +201,18 @@ def get_voice_activities(vad_preprocessed, seconds_per_frame=80.0/1000.0):
             fname = fname[:-4]  # cut vad
 
             dir_name = normalize(dir_name)
-            if dir_name not in voice_times:
-                voice_times[dir_name] = {}
+            if dir_name not in file_times:
+                file_times[dir_name] = {}
                 voice_activities[dir_name] = {}
 
-            voice_times[dir_name][fname] = v[1] * seconds_per_frame
+            file_times[dir_name][fname] = v[1] * seconds_per_frame
             voice_activities[dir_name][fname] = [
                 (round(seconds_per_frame * x[0], 2), round(seconds_per_frame * x[1], 2)) for x in v[0]]
             total_time += v[1]
 
     total_time *= seconds_per_frame
     print('Total time in VAD files, hours', total_time / 60 / 60)
-    return voice_times, voice_activities
+    return file_times, voice_activities
 
 
 def get_duplicates(path):
@@ -276,7 +278,7 @@ if __name__ == '__main__':
 
         if normalized_book_name in name2json:
             errors = process_dir(normalized_book_name, dir_path, name2json,
-                                 voice_activities, snr_table, test_speakers)
+                                 voice_times, voice_activities, snr_table, test_speakers)
             aggregated_errors.update(errors)
         else:
             unmatched_names.add(book_name)

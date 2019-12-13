@@ -8,14 +8,11 @@ import copy
 import random
 import math
 
-def get_speech_len(file_meta):
-    return file_meta['file_length_sec']
-    #return file_meta['book_meta']['totaltimesecs']
-
 
 def get_stats(fnames, fnames2jsons):
 
-    total_seconds = sum(get_speech_len(fnames2jsons[fname]) for fname in fnames)
+    total_seconds = sum(fnames2jsons[fname]
+                        ['file_length_sec'] for fname in fnames)
 
     files_per_genre = defaultdict(int)
     seconds_per_genre = defaultdict(int)
@@ -30,7 +27,7 @@ def get_stats(fnames, fnames2jsons):
         data = fnames2jsons[fname]
 
         snr = data['snr'] if not math.isnan(data['snr']) else 0
-        seconds = get_speech_len(data)
+        seconds = data['file_length_sec']
 
         mean_snr += snr * seconds
 
@@ -65,7 +62,7 @@ def get_genre2time(fnames, fnames2jsons):
             file_genres = data['book_meta']['genre']
 
         for genre in file_genres:
-            seconds_per_genre[genre] += get_speech_len(data)
+            seconds_per_genre[genre] += data['file_length_sec']
 
     return seconds_per_genre
 
@@ -97,7 +94,7 @@ def get_fname2json(fnames):
 
 def nearly_stratified_sample(fnames, files2jsons):
     overall_time = sum(
-        get_speech_len(fnames2jsons[fname]) for fname in fnames)
+        fnames2jsons[fname]['file_length_sec'] for fname in fnames)
     print('Stratified sampling from', overall_time / 3600, 'hours')
 
     genre2time = get_genre2time(fnames, fnames2jsons)
@@ -118,7 +115,7 @@ def nearly_stratified_sample(fnames, files2jsons):
             file_genres = ['<none>']
         else:
             file_genres = data['book_meta']['genre']
-        length = get_speech_len(data)
+        length = data['file_length_sec']
 
         fits = True
         for file_genre in file_genres:
@@ -133,7 +130,7 @@ def nearly_stratified_sample(fnames, files2jsons):
                     genre2budget[file_genre] -= length
 
     overall_time = sum(
-        get_speech_len(fnames2jsons[fname]) for fname in selected_files)
+        fnames2jsons[fname]['file_length_sec'] for fname in selected_files)
     print('Stratified sampled', overall_time / 3600, 'hours')
 
     return selected_files
