@@ -1,61 +1,62 @@
-# Libri-light data preparation
+# Libri-light Data Preparation and Download
 
+Below, we provide steps scripts to reconstruct the raw dataset from scratch including data download, conversion into flac,
+Voice Activity Detection (VAD) and Signal to Noise (SNR) computation, metadata construction, and dataset filtering and splitting.
 
+All scripts mentioned below can be found in this directory.
 
-Here we provide scripts to reconstruct the raw dataset from scratch, including data download, conversion into flac,
-Voice Activity Detection (VAD) and Signal to Noise (SNR) computation,
-meta-data construction, and dataset filtering and splitting.
+## Downloading the Data
 
-## Download the data
+### 1. Getting and Preparing the Unlabeled Audio
 
-### 1. Get and prepare the unlabelled data
+#### 1A. Downloading
 
-**1.A Download.** The unlabelled data is spit into 3 subsets of increasing lengths (small, medium, large). These splits are done to enable doing experiments on smaller amounts of data (also, downloading the large dataset can take several days!).
+The unlabelled data is spit into 3 subsets of increasing sizes (small, medium, large) in order to facilitate experimentation on smaller amounds of data (further, downloading the large dataset may take several days).
 
 -  [small.tar  (577 hours, 35 GB)](https://dl.fbaipublicfiles.com/librilight/data/small.tar)   
 -  [medium.tar (5193 hours, 321 GB)](https://dl.fbaipublicfiles.com/librilight/data/medium.tar)
 -  [large.tar  (51934 hours, 3.05 TB)](https://dl.fbaipublicfiles.com/librilight/data/large.tar)
 
-In addition, we also provide a 4th subset containing potentially duplicated books.
+We additionally provide a 4th subset containing potentially duplicated books.
 
 - [unlab_duplicate.tar  (4500 hours, 274 GB)](https://dl.fbaipublicfiles.com/librilight/data/duplicate.tar)
 
-The directory structure of the archives is the same as for librispeech:
+The directory structure of the audio arvhices mirrors that of [LibriSpeech](http://www.openslr.org/12):
 
     dataset_name/speakerID/book_name/
 
-where `dataset_name` is `small`, `medium`, `large`, or `duplicate`, `speakerID` is the librivox speakerID (a number), and `book_name` the name of the original LibriVox audiobook file. Inside each directory, you should find a set of `.flac` and `.json` files. See below for the format  of the `.json` files.
+where `dataset_name` is `small`, `medium`, `large`, `duplicate`, `speakerID` is the LibriVox speakerID (a number), and `book_name` the name of the original LibriVox audiobook file. Inside each directory is a set of `.flac` and `.json` files. See below for the format of the `.json` files.
 
-By combining these subsets, you can construct the 3 splits described in the Libri-light paper:
+By combining these subsets, one can construct the 3 splits described in the Libri-Light paper:
 
-- *unlab-58k*  : small+medium+large
-- *unlab-5.8k* : small+medium
+- *unlab-58k*  : small + medium + large
+- *unlab-5.8k* : small + medium
 - *unlab-580*  : small
 
 
-Once the dataset is downloaded, "untarred" and organised into a directory `UNLAB_DIR` you can check its statistics with the command:
-
+Once the dataset is downloaded, untarred and organized into a directory (`UNLAB_DIR`) you can check its statistics by running:
 ```console
     python get_stats.py UNLAB_DIR OUTPUT_DIR
 ```
-This will construct in `OUTPUT_DIR` two .png files (plus .json files in a .cache directory)
+This will construct, in `OUTPUT_DIR`, two `.png` files (in addition to `.json` files in a `.cache` directory)
 
-**1.B Segment.** Each file may be rather long and may not fit into memory.  As a final step, we provide a script to segment the files into roughly 60sec sequences obtained by concatenating consecutive voice activity chunks.
+#### 1B. Segmenting
+
+Original audio files are long and may not fit into memory.  As a final step, we provide a script to segment the files into roughly 60sec sequences obtained by concatenating consecutive chunks containing voice activity:
 
 ```console
     python cut_by_vad.py --input_dir INPUT_DIR --output_dir OUTPUT_DIR
 ```
 
-In `OUTPUT_DIR`, there will be the same structure as above, but each file_name directory will have a list of smaller files (`.flac`). You can change this step as fits your model. 
-
+`OUTPUT_DIR` will have the same structure as above, but each `file_name` directory will have a list of smaller files (`.flac`). You can modify this step as fits your pipeline and model. 
 
 ### 2. Get the limited-supervision train data
 
-The limited supervision training sets are built on Librispeech. They consist in 10h, 1h, and 10 minute splits with orthographic transciptions and aligned phoneme transcriptions, which can be used to train small models or fine-tune pretrained ones. This can be downloaded here:
+The limited supervision training sets are built on LibriSpeech. They consist in 10h, 1h, and 10 minute splits with orthographic transciptions and aligned phoneme transcriptions, which can be used to train small models or fine-tune pretrained ones. These can be downloaded here:
 
 - [librispeech_finetuning.tgz  (10 hours, 0.6 GB)](https://dl.fbaipublicfiles.com/librilight/data/librispeech_finetuning.tgz)   
 
-The directory structure is the following:
+The directory structure is as follows:
 
      1h/         # data of the 1h split (made up of 6 folds of 10 min)
          0/         # first 10 min fold
@@ -71,15 +72,13 @@ The directory structure is the following:
      phones/     # phoneme alignment for all of the files
 
 
-The 10h split is made by combining the data from the `9h/` and the `1h` directories. The 1h split is itself made of 6 folds of 10 min splits. The `phone/` directory contains the frame-wise phoneme transcription of the various splits (the IPA phone mappings are in `phone_mapping.json`). There is also the phoneme transcription of the librispeech dev and test sets.  
-
-
-Alternatively, you can reconstruct this dataset by downloading by hand librispeech and running the scripts in `rebuild_limited_train/`.
+The 10h split is created by combining the data from the `9h/` and the `1h` directories. The 1h split is itself made of 6 folds of 10 min splits. The `phone/` directory contains the frame-wise phoneme transcription of the various splits (the IPA phone mappings are in `phone_mapping.json`). There is also a phoneme transcription of the LibriSpeech `dev` and `test` sets.  
+Alternatively, one can reconstruct the dataset by downloading by hand librispeech and running the scripts in `rebuild_limited_train/`.
 
 
 ### 3. Get the dev and test sets (for evaluation)
 
-These are the standard librispeech dev and test sets. They can be gotten at the following address:
+The standard LibriSpeech dev and test sets are used for evaluation, and can be found at:
 
     wget http://www.openslr.org/resources/12/dev-clean.tar.gz
     wget http://www.openslr.org/resources/12/dev-other.tar.gz
@@ -88,22 +87,23 @@ These are the standard librispeech dev and test sets. They can be gotten at the 
 
 
 
-## Regenerate the entire data from scratch (or build it in another language !)
+## Regenerating the Dataset from Scratch (or with books in Another Language!)
 
-We provide scripts that would completely regenerate the raw data from the librivox repository.
-To download the audio data from libri-vox.
+Below, we provide the steps needed to completely reproduce generation of the dataset starting from raw LibriVox audio.
+
+First, download the audio data from [LibriVox](https://librivox.org/).
 ```console
 python download_librivox.py $OUTPUT_DOWNLOAD
 ```
 
-You can actually try to download data in another language. To do so, use the --language option (for example --language French)
+Data can be downloaded in another language. To do so, pass `--language` to above script (for example `--language French`). The amount of available data for each language may differ.
 
-Then, you will need to unzip the data, just use:
+To unzip the data, run:
 ```console
 python unzip_and_convert.py unzip $OUTPUT_DOWNLOAD -o $OUTPUT_MP3
 ```
 
-And convert them from .mp3 to flac:
+And convert them from `.mp3` to flac:
 ```console
 python unzip_and_convert.py convert $OUTPUT_MP3 -o $OUTPUT_FLAC -f .flac
 ```
@@ -148,9 +148,11 @@ python complete_metadata.py --path_metadata $OUTPUT_DOWNLOAD --out_dir $OUTPUT_F
 ![pipeline](data_preparation_pipeline.svg)
 Figure 1. Complete data preparation pipeline. 
 
-## Format of Json files
+## Metadata JSON File Format
 
-We created one json file per LibriVox audio file. This is different from the LibriVox distribution that had one json per book and each book could have several files.
+For each LibriVox audio file, we create one JSON metadata file. This differs from the LibriVox distribution, which contains one JSON per book where a single book may have multiple associated audio files.
+
+Below is a labeled example of output metadata produced by the pipeline:
 
      {
      "speaker" : "960"    # LibriVox speaker ID

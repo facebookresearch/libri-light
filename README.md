@@ -1,26 +1,26 @@
 # Libri-Light: a (large) dataset for ASR with limited or no supervision
 
 
-This repo contains code associated with the Libri-light dataset which can be downloaded HERE. It contains code for data preparation, pretrained models and evaluation.
+This repository contains code and models associated with the Libri-Light dataset, which can be [downloaded here](./data_preparation/README.md). It contains code for data preparation, pretrained models, and evaluation resources:
 
 
-    data_preparation/         # dowload code; VAD and SNR code; json generation; stats; data segmentation
-    eval/                     # ABX, PER, WER (evaluation metrics on dev-clean, dev-other, test-clean, test-other)
-    TDS/                      # code, pretrained models, examples for the TDS baselines
+    data_preparation/         # code to download the data; VAD and SNR code; json generation; stats; audio segmentation
+    eval/                     # ABX, PER, WER (evaluation metrics on LibriSpeech dev-clean, dev-other, test-clean, test-other)
+    models/                   # code, pretrained wav2letter models, baselines, and examples
 
-To install:
+To get started, first clone the repository:
 
-     git clone https://github.com/facebookresearch/libri-light
+    git clone https://github.com/facebookresearch/libri-light
 
-Then, if you have conda, install the requirements with:
+The environment is easiest to set up with Anaconda. Requirements can be installed by running:
 
-     conda env create -f environment.yml && conda activate libri-light
+    conda env create -f environment.yml && conda activate libri-light
 
-If you don't have conda you can install it from [here](https://docs.anaconda.com/anaconda/install/).
+If you don't have `conda` you can get it [here](https://docs.anaconda.com/anaconda/install/).
 
 ## Goals and structure
 
-Libri-light offers 60+ k hours of unlabelled speech, a small training set for limited supervision (10h, 1h or 10 minutes of labelled speech), and a common set of metrics to evaluated three settings:
+Libri-Light offers 60+ k hours of unlabelled speech, a small training set for limited supervision (10h, 1h or 10 minutes of labelled speech), and a common set of metrics to evaluated three settings:
 
   1. the unsupervised/zero-resource setting. Here, models are trained only on unlabelleds speech and attempt to construct 'good' speech representations. They are evaluated with the ABX metric.
   2. the semi-supervised setting. Here, models are trained with the limited supervision dataset and exploit the unlabelled in various ways (as pretraining, to get pseudo-labels, etc). The models are evaluated using either PER or WER.
@@ -29,11 +29,11 @@ Libri-light offers 60+ k hours of unlabelled speech, a small training set for li
 
 ## Documentation
 
-To use librilight, first go in `data_preparation/` and follow the instructions in the section "Download the data".
-You can then go in `eval/` and run ABX, PER and WER evaluations on pretrained CPC models. 
-Finally, you'll find in `TDS` the wav2letter experiments described in the paper.
+Documentation for downloading Libri-Light or preparing the source files from scratch can be found in [`data_preparation`](./data_preparation/README.md).
 
+The [`eval`](./eval/README.md) contains ABX, PER and WER evaluations on pretrained CPC models.
 
+The [`models`](./models/README.md) directory contains pretrained [wav2letter](https://github.com/facebookresearch/wav2letter/) models and information about reproduction.
 
 
 ## Citing
@@ -51,4 +51,4 @@ Finally, you'll find in `TDS` the wav2letter experiments described in the paper.
 
 ## License
 
-The Libri-light code is released under the MIT license. See LICENSE for additional details.
+The Libri-light code is released under the [MIT license](https://opensource.org/licenses/MIT). See LICENSE for additional details.
