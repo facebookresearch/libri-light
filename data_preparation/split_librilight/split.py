@@ -2,6 +2,7 @@ from collections import defaultdict
 import argparse
 import json
 import pathlib
+import math
 
 
 def get_stats(fnames, fnames2jsons):
@@ -21,7 +22,7 @@ def get_stats(fnames, fnames2jsons):
     for fname in fnames:
         data = fnames2jsons[fname]
 
-        snr = data['snr']
+        snr = data['snr'] if not math.isnan(data['snr']) else 0.0
         seconds = data['file_length_sec']
 
         mean_snr += snr * seconds
@@ -87,22 +88,22 @@ def get_fname2json(fnames):
     return fname2json
 
 
-def nearly_stratified_sample(fnames, files2jsons):
+def subselect(fnames, files2jsons, divisor=10):
     overall_time = sum(
         fnames2jsons[fname]['file_length_sec'] for fname in fnames)
-    print('Stratified sampling from', overall_time / 3600, 'hours')
+    print('Selecting from', overall_time / 60 / 60, 'hours')
 
     genre2time = get_genre2time(fnames, fnames2jsons)
 
     genre2budget = {}
     for genre, time in genre2time.items():
-        genre2budget[genre] = time // 10
+        genre2budget[genre] = time // divisor
 
     time_selected = 0
     selected_files = []
 
     for fname in fnames:
-        if time_selected > overall_time // 10:
+        if time_selected > overall_time // divisor:
             break
 
         data = fnames2jsons[fname]
@@ -126,7 +127,7 @@ def nearly_stratified_sample(fnames, files2jsons):
 
     overall_time = sum(
         fnames2jsons[fname]['file_length_sec'] for fname in selected_files)
-    print('Stratified sampled', overall_time / 3600, 'hours')
+    print('Selected', overall_time / 60 / 60, 'hours')
 
     return selected_files
 
@@ -141,12 +142,9 @@ def take_n(x, n):
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--librivox_processed', type=str,
-                        default='/checkpoint/kharitonov/librilight_converted_flac/')
-
-    parser.add_argument('--seed', type=int, default=7)
+    parser.add_argument('--librivox_processed', type=str)
     parser.add_argument('--sampling_steps', type=int, default=3)
-    parser.add_argument('--take_n', type=int, default=1000)
+    parser.add_argument('--debug', action='store_true')
 
     args = parser.parse_args()
     return args
@@ -156,7 +154,7 @@ if __name__ == '__main__':
     args = get_args()
 
     fnames = list(
-        take_n(pathlib.Path(args.librivox_processed).rglob('*.json'), args.take_n))
+        take_n(pathlib.Path(args.librivox_processed).rglob('*.json'), n=1000 if args.debug else -1))
     fnames2jsons = get_fname2json(fnames)
 
     for sampling_step in range(args.sampling_steps):
@@ -184,5 +182,5 @@ if __name__ == '__main__':
                 'time_weighted_snr': mean_snr},
                 indent=1))
 
-        fnames = nearly_stratified_sample(
+        fnames = subselect(
             fnames, fnames2jsons)
