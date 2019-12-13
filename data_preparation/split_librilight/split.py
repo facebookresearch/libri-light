@@ -169,7 +169,7 @@ if __name__ == '__main__':
               len(unique_books), ' files ', len(fnames))
         print('Time-weighted snr', mean_snr)
 
-        with open(f'genres_{sampling_step}.txt', 'w') as f:
+        with open(f'split_{sampling_step}.json', 'w') as f:
             dump = [(genre, {'seconds': seconds, 'hours': seconds / 60 / 60,
                              'files': files_per_genre[genre],
                              'mean_snr': snr_per_genre[genre]}) for (genre, seconds) in seconds_per_genre.items()]
