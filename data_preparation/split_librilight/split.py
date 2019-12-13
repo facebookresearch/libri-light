@@ -2,11 +2,6 @@ from collections import defaultdict
 import argparse
 import json
 import pathlib
-import shutil
-import os
-import copy
-import random
-import math
 
 
 def get_stats(fnames, fnames2jsons):
@@ -26,7 +21,7 @@ def get_stats(fnames, fnames2jsons):
     for fname in fnames:
         data = fnames2jsons[fname]
 
-        snr = data['snr'] if not math.isnan(data['snr']) else 0
+        snr = data['snr']
         seconds = data['file_length_sec']
 
         mean_snr += snr * seconds
@@ -159,7 +154,6 @@ def get_args():
 
 if __name__ == '__main__':
     args = get_args()
-    random.seed(args.seed)
 
     fnames = list(
         take_n(pathlib.Path(args.librivox_processed).rglob('*.json'), args.take_n))
