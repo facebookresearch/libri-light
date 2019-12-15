@@ -48,7 +48,7 @@ Original audio files are long and may not fit into memory.  As a final step, we 
     python cut_by_vad.py --input_dir INPUT_DIR --output_dir OUTPUT_DIR
 ```
 
-`OUTPUT_DIR` will have the same structure as above, but each `file_name` directory will have a list of smaller files (`.flac`). You can modify this step as fits your pipeline and model. 
+`OUTPUT_DIR` will have the same structure as above, but each `file_name` directory will have a list of smaller files (`.flac`). You can modify this step as fits your pipeline and model.
 
 ### 2. Get the limited-supervision train data
 
@@ -132,7 +132,7 @@ If `make_vad_inputs.py` is used to generate the input list file, then the [analy
 
 ### Running SNR
 
-To extract the SNR, run: 
+To extract the SNR, run:
 ```console
 python calculate_snr.py librivox.lst > calculated_snr.tsv
 ```
@@ -144,13 +144,13 @@ python calculate_snr.py librivox.lst calcuated_snr.tsv > calculated_snr_leftover
 This program looks at the VAD output, classifies speech frames and non speech frames base on a dataset specific threshold, removes unclassified frames, and calculates the SNR base on (speech power / non-speech power)
 
 Prerequisite:
-- `librivox.lst` is a plain list of all wav filepath downloaded from librivox.org, which looks like this: 
+- `librivox.lst` is a plain list of all wav filepath downloaded from librivox.org, which looks like this:
 ```console
 /some/path/to/audio1.wav
 /some/path/to/audio2.wav
 ```
 - you have to finish the VAD step to have generated the corresponding <wav>.vad file in the same folder as each .wav files
-- If you have retrained the VAD model or running on a different dataset, looking at the histogram over some audio files to decide on the threshold is essential for good performance. 
+- If you have retrained the VAD model or running on a different dataset, looking at the histogram over some audio files to decide on the threshold is essential for good performance.
 - wav file input is required to be 16kHz.
 
 ### Preparing Metadata Files
@@ -160,9 +160,10 @@ To create metadata files:
 python complete_metadata.py --path_metadata $OUTPUT_DOWNLOAD --out_dir $OUTPUT_FLAC --ignore_cache
 ```
 
+This command will also make the list of all duplicate books at save it at $OUTPUT_FLAC/global/duplicates.json.
 
 ![pipeline](data_preparation_pipeline.svg)
-Figure 1. Complete data preparation pipeline. 
+Figure 1. Complete data preparation pipeline.
 
 ## Metadata JSON File Format
 
