@@ -35,3 +35,11 @@ python split.py --librivox_processed=<directory with metadata jsons and flac fil
 The produced files would be named as `split_0.json` (largest), `split_1.json` (second largest), etc. They also
 contain some rudimntary statistics of the selected data.
 
+Finally, you can materialize the prepared splits by running
+```console
+python materialize_split.py --src_dir<directory with metadata jsons and flac files> --dst_dir=<dst-small> --json=split_2.json
+```
+If you want to exclude other splits, you can use `--minus` parameter:
+```console
+python materialize_split.py --src_dir<directory with metadata jsons and flac files> --dst_dir=<dst> --json=split_1.json --minus=split_2.json
+```
