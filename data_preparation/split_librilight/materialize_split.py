@@ -26,8 +26,8 @@ def _apply(task):
     action(src_file, dst_file)
 
     # move/copy flac file
-    src_file = src / file.parent.name / str(file.stem + '.flac')
-    dst_file = dst_dir / str(file.stem + '.flac')
+    src_file = src / file.parent.name / (file.stem + '.flac')
+    dst_file = dst_dir / (file.stem + '.flac')
     action(src_file, dst_file)
 
 
