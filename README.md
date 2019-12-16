@@ -1,4 +1,4 @@
-# Libri-Light: a (large) dataset for ASR with limited or no supervision
+# Libri-light: a benchmark for ASR with limited or no supervision
 
 
 This repository contains code and models associated with the Libri-Light dataset, which can be [downloaded here](./data_preparation/README.md). It contains code for data preparation, pretrained models, and evaluation resources:
