@@ -29,9 +29,9 @@ where `dataset_name` is `small`, `medium`, `large`, `duplicate`, `speakerID` is 
 
 By combining these subsets, one can construct the 3 splits described in the Libri-Light paper:
 
-- *unlab-58k*  : small + medium + large
-- *unlab-5.8k* : small + medium
-- *unlab-580*  : small
+- *unlab-60k*  : small + medium + large
+- *unlab-6k* : small + medium
+- *unlab-600*  : small
 
 
 Once the dataset is downloaded, untarred and organized into a directory (`UNLAB_DIR`) you can check its statistics by running:
