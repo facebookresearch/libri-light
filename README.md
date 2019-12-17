@@ -5,7 +5,7 @@ This repository contains code and models associated with the Libri-Light dataset
 
     data_preparation/         # code to download the data; VAD and SNR code; json generation; stats; audio segmentation
     eval/                     # ABX, PER, WER (evaluation metrics on LibriSpeech dev-clean, dev-other, test-clean, test-other)
-    models/                   # code, pretrained wav2letter models, baselines, and examples
+    baselines/                   # code, pretrained wav2letter models, baselines, and examples
 
 To get started, first clone the repository:
 
@@ -32,7 +32,7 @@ Documentation for downloading Libri-Light or preparing the source files from scr
 
 The [`eval`](./eval/README.md) directory contains ABX, PER and WER evaluations on pretrained CPC models.
 
-The [`baselines`](./models/README.md) directory contains pretrained [wav2letter](https://github.com/facebookresearch/wav2letter/) models and information about reproduction.
+The [`baselines`](./baselines/README.md) directory contains pretrained [wav2letter](https://github.com/facebookresearch/wav2letter/) baseline models and information about reproduction.
 
 
 ## Citing
