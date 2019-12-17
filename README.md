@@ -1,6 +1,6 @@
 # Libri-light: A benchmark for ASR with Limited or No Supervision
 
-This repository contains code and models associated with the Libri-Light dataset, which can be [downloaded here](./data_preparation/README.md). It contains code for data preparation, pretrained models, and evaluation resources:
+This repository contains code and models associated with the Libri-Light dataset, which can be [downloaded and prepared here](./data_preparation/README.md). It contains code for data preparation, pretrained models, and evaluation resources:
 
 
     data_preparation/         # code to download the data; VAD and SNR code; json generation; stats; audio segmentation
@@ -30,9 +30,9 @@ Libri-Light offers 60+ k hours of unlabelled speech, a small training set for li
 
 Documentation for downloading Libri-Light or preparing the source files from scratch can be found in [`data_preparation`](./data_preparation/README.md).
 
-The [`eval`](./eval/README.md) contains ABX, PER and WER evaluations on pretrained CPC models.
+The [`eval`](./eval/README.md) directory contains ABX, PER and WER evaluations on pretrained CPC models.
 
-The [`models`](./models/README.md) directory contains pretrained [wav2letter](https://github.com/facebookresearch/wav2letter/) models and information about reproduction.
+The [`baselines`](./models/README.md) directory contains pretrained [wav2letter](https://github.com/facebookresearch/wav2letter/) models and information about reproduction.
 
 
 ## Citing
