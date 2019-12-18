@@ -49,7 +49,7 @@ def get_args():
     return args
 
 
-# lambda-function are un-pickable
+# lambda-functions are un-pickable
 def _print(src, dst):
     print(src, '->', dst)
 
