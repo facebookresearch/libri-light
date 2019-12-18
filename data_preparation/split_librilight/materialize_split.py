@@ -32,7 +32,8 @@ def _apply(task):
 
 
 def get_args():
-    parser = argparse.ArgumentParser("A script to copy prepared data splits to releasable folders")
+    parser = argparse.ArgumentParser(
+        description="A script to copy prepared data splits to releasable folders")
     parser.add_argument('--src_dir', type=str, required=True)
     parser.add_argument('--dst_dir', type=str, required=True)
     parser.add_argument('--json', type=str, required=True)
@@ -51,6 +52,7 @@ def get_args():
 # lambda-function are un-pickable
 def _print(src, dst):
     print(src, '->', dst)
+
 
 if __name__ == '__main__':
     args = get_args()
