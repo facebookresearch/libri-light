@@ -33,5 +33,13 @@ selected (nested) sets of files, each having 10x less audio-time:
 python split.py --librivox_processed=<directory with metadata jsons and flac files> --sampling_steps=3 --divisor=10
 ```
 The produced files would be named as `split_0.json` (largest), `split_1.json` (second largest), etc. They also
-contain some rudimntary statistics of the selected data.
+contain some rudimentary statistics of the selected data.
 
+Finally, you can actually copy the selected files to a specified directory ("materialize") by running
+```console
+python materialize_split.py --src_dir<directory with metadata jsons and flac files> --dst_dir=<dst-small> --json=split_2.json
+```
+If you want to exclude other splits (e.g. make the `medium` split directory not contain files from the `small`), you can use `--minus` parameter:
+```console
+python materialize_split.py --src_dir<directory with metadata jsons and flac files> --dst_dir=<dst> --json=split_1.json --minus=split_2.json
+```
