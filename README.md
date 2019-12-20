@@ -1,6 +1,6 @@
 # Libri-Light: A Benchmark for ASR with Limited or No Supervision
 
-This repository contains code and models associated with the Libri-Light dataset, which can be [downloaded and prepared here](./data_preparation/README.md). It contains code for data preparation, pretrained models, and evaluation resources:
+This repository contains code and models associated with the Libri-Light dataset, which can be [downloaded and prepared here](./data_preparation/README.md). More information about dataset creation and baselines can be found in this [arXiv Paper](https://arxiv.org/abs/1912.07875). Contained here is code for data preparation, pretrained models, and evaluation resources:
 
 
     data_preparation/         # code to download the data; VAD and SNR code; json generation; stats; audio segmentation
@@ -44,8 +44,9 @@ The [`baselines`](./baselines/README.md) directory contains pretrained [wav2lett
         title = {{Libri-Light: A (Large) Dataset for ASR with Weak or No Supervision}},
         year = {2019},
         publisher = {GitHub},
-        journal = {ArXiv repository},
-        howpublished = {\url{https://github.com/facebookresearch/libri-light}},
+        journal = {arXiv Repository},
+        howpublished = {\url{https://arxiv.org/abs/1912.07875}},
+        note = {\url{https://github.com/facebookresearch/libri-light}},
     }
 
 ## License
