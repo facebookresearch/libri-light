@@ -41,10 +41,10 @@ The [`baselines`](./baselines/README.md) directory contains pretrained [wav2lett
         author = {Kahn, J. and Rivière, M. and Zheng, W. and Kharitonov, E. and Xu, Q. and
          Mazaré, P.E. and Karadayi, J. and Liptchinsky, V. and Collobert, R. and Fuegen, C. and
          Likhomanenko, T. and Synnaeve, G. and Joulin, A. and Mohamed, A. and Dupoux, E.},
-        title = {{Libri-Light: A (Large) Dataset for ASR with Weak or No Supervision}},
+        title={Libri-Light: A Benchmark for ASR with Limited or No Supervision},
         year = {2019},
         publisher = {GitHub},
-        journal = {arXiv Repository},
+        journal = {arXiv preprint arXiv:1912.07875},
         howpublished = {\url{https://arxiv.org/abs/1912.07875}},
         note = {\url{https://github.com/facebookresearch/libri-light}},
     }
