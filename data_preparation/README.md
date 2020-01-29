@@ -36,7 +36,7 @@ By combining these subsets, one can construct the 3 splits described in the Libr
 
 Once the dataset is downloaded, untarred and organized into a directory (`UNLAB_DIR`) you can check its statistics by running:
 ```console
-    python get_stats.py UNLAB_DIR OUTPUT_DIR
+    python build_all_stats.py UNLAB_DIR OUTPUT_DIR
 ```
 This will construct, in `OUTPUT_DIR`, two `.png` files (in addition to `.json` files in a `.cache` directory)
 
