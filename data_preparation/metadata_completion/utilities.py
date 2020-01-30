@@ -209,7 +209,7 @@ def get_speaker_data(path_dir, list_metadata, pathWav):
     return speakerTalk, multiples
 
 
-def get_speaker_hours_data(path_dir, list_metadata, audio_extension):
+def get_speaker_hours_data(list_metadata, audio_extension):
 
     speakerTalk = {}
     nData = len(list_metadata)
@@ -217,9 +217,8 @@ def get_speaker_hours_data(path_dir, list_metadata, audio_extension):
     bar = progressbar.ProgressBar(maxval=nData)
     bar.start()
 
-    for index, name_metadata in enumerate(list_metadata):
+    for index, pathMetadata in enumerate(list_metadata):
         bar.update(index)
-        pathMetadata = os.path.join(path_dir, name_metadata)
         with open(pathMetadata, 'rb') as file:
             locMetadata = json.load(file)
 
@@ -243,7 +242,7 @@ def get_speaker_hours_data(path_dir, list_metadata, audio_extension):
     return speakerTalk
 
 
-def get_hour_tag_repartition(path_dir, list_metadata, tagName,
+def get_hour_tag_repartition(list_metadata, tagName,
                              audio_extension):
 
     nItems = len(list_metadata)
@@ -252,9 +251,8 @@ def get_hour_tag_repartition(path_dir, list_metadata, tagName,
     bar = progressbar.ProgressBar(maxval=nItems)
     bar.start()
 
-    for index, name_metadata in enumerate(list_metadata):
+    for index, pathMetadata in enumerate(list_metadata):
         bar.update(index)
-        pathMetadata = os.path.join(path_dir, name_metadata)
         with open(pathMetadata, 'rb') as file:
             locMetadata = json.load(file)
 
