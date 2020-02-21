@@ -13,9 +13,12 @@ All scripts mentioned below can be found in this directory.
 
 The unlabelled data is spit into 3 subsets of increasing sizes (small, medium, large) in order to facilitate experimentation on smaller amounds of data (further, downloading the large dataset may take several days).
 
--  [small.tar  (577 hours, 35 GB)](https://dl.fbaipublicfiles.com/librilight/data/small.tar)   
+-  [small.tar  (577 hours, 35 GB)](https://dl.fbaipublicfiles.com/librilight/data/small.tar)
+    - md5: `c49207eb86a8e8ac895561c37232041e`
 -  [medium.tar (5193 hours, 321 GB)](https://dl.fbaipublicfiles.com/librilight/data/medium.tar)
+    - md5: `c75e7ac62471bfbf2db77528d62a9b74`
 -  [large.tar  (51934 hours, 3.05 TB)](https://dl.fbaipublicfiles.com/librilight/data/large.tar)
+    - md5: `4dfbac018f50b99797ece101fc9f0c30`
 
 We additionally provide a 4th subset containing potentially duplicated books.
 
