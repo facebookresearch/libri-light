@@ -128,7 +128,7 @@ def parse_args(argv):
                         "model to the input data to compute the features")
     parser.add_argument('--file_extension', type=str, default='.pt',
                         choices=['.pt', '.npy', '.wav', '.flac', '.mp3'])
-    parser.add_argument('--feature_size', type=int, default=0.01,
+    parser.add_argument('--feature_size', type=float, default=0.01,
                         help="Size (in s) of one feature")
     parser.add_argument('--cuda', action='store_true',
                         help="Use the GPU to compute distances")
