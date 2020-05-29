@@ -10,6 +10,10 @@ def get_distance_function_from_name(name_str):
         return get_euclidian_distance_batch
     if name_str == 'cosine':
         return get_cosine_distance_batch
+    if name_str == 'kl':
+        return get_kl_distance_batch
+    if name_str == 'kl_symmetric':
+        return get_kl_distance_symmetric_batch
     raise ValueError(f"Invalid distance mode")
 
 
@@ -19,6 +23,27 @@ def check_dtw_group_validity(a, b, x):
     assert(a.size(2) == x.size(2))
     assert(a.size(2) == b.size(2))
 
+def get_kl_distance_batch(a1, a2, epsilon=1e-6):
+    N1, S1, D = a1.size()  # Batch x Seq x Channel
+    N2, S2, D = a2.size()  # Batch x Seq x Channel
+
+    # (P * (P / Q).log()).sum()
+    div = (a1.view(N1, 1, S1, 1, D) + epsilon) / (a2.view(1, N2, 1, S2, D) + epsilon)
+    prod = (a1.view(N1, 1, S1, 1, D)) * div.log()
+
+    return prod.sum(dim=4)
+
+def get_kl_distance_symmetric_batch(a1, a2, epsilon=1e-6):
+    N1, S1, D = a1.size()
+    N2, S2, D = a2.size()
+
+    div1 = (a1.view(N1, 1, S1, 1, D) + epsilon) / (a2.view(1, N2, 1, S2, D) + epsilon)
+    div2 = (a2.view(1, N2, 1, S2, D) + epsilon) / (a1.view(N1, 1, S1, 1, D) + epsilon)
+
+    prod1 = (a1.view(N1, 1, S1, 1, D)) * div1.log()
+    prod2 = (a2.view(1, N2, 1, S2, D)) * div2.log()
+
+    return (0.5*prod1 + 0.5*prod2).sum(dim=4)
 
 def get_cosine_distance_batch(a1, a2, epsilon=1e-8):
     r""" a1 and a2 must be normalized"""

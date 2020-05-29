@@ -136,7 +136,7 @@ def parse_args(argv):
                         choices=['all', 'within', 'across'],
                         help="Choose the mode of the ABX score to compute")
     parser.add_argument('--distance_mode', type=str, default='cosine',
-                        choices=['euclidian', 'cosine'],
+                        choices=['euclidian', 'cosine', 'kl', 'kl_symmetric'],
                         help="Choose the kind of distance to use to compute "
                         "the ABX score.")
     parser.add_argument("--max_size_group", type=int, default=10,
