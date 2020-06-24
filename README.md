@@ -36,18 +36,16 @@ The [`baselines`](./baselines/README.md) directory contains pretrained [wav2lett
 
 
 ## Citing
-
-    @misc{librilight,
-        author = {Kahn, J. and Rivière, M. and Zheng, W. and Kharitonov, E. and Xu, Q. and
-         Mazaré, P.E. and Karadayi, J. and Liptchinsky, V. and Collobert, R. and Fuegen, C. and
-         Likhomanenko, T. and Synnaeve, G. and Joulin, A. and Mohamed, A. and Dupoux, E.},
-        title={Libri-Light: A Benchmark for ASR with Limited or No Supervision},
-        year = {2019},
-        publisher = {GitHub},
-        journal = {arXiv preprint arXiv:1912.07875},
-        howpublished = {\url{https://arxiv.org/abs/1912.07875}},
-        note = {\url{https://github.com/facebookresearch/libri-light}},
-    }
+```
+@INPROCEEDINGS{librilight,
+  author={J. {Kahn} and M. {Rivière} and W. {Zheng} and E. {Kharitonov} and Q. {Xu} and P. E. {Mazaré} and J. {Karadayi} and V. {Liptchinsky} and R. {Collobert} and C. {Fuegen} and T. {Likhomanenko} and G. {Synnaeve} and A. {Joulin} and A. {Mohamed} and E. {Dupoux}},
+  booktitle={ICASSP 2020 - 2020 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)}, 
+  title={Libri-Light: A Benchmark for ASR with Limited or No Supervision}, 
+  year={2020},
+  pages={7669-7673},
+  note = {\url{https://github.com/facebookresearch/libri-light}},
+}
+```
 
 ## License
 
