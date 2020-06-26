@@ -1,4 +1,9 @@
 # Libri-Light: A Benchmark for ASR with Limited or No Supervision
+You can track papers that use Libri-Light and their relative performance on Papers With Code: 
+[[test-clean]](https://paperswithcode.com/sota/speech-recognition-on-libri-light-test-clean)
+[[test-other]](https://paperswithcode.com/sota/speech-recognition-on-libri-light-test-clean)
+
+## Description
 
 This repository contains code and models associated with the Libri-Light dataset, which can be [downloaded and prepared here](./data_preparation/README.md). More information about dataset creation and baselines can be found in this [arXiv Paper](https://arxiv.org/abs/1912.07875). Contained here is code for data preparation, pretrained models, and evaluation resources:
 
