@@ -32,7 +32,7 @@ As a result, the files would be moved form `root_10h` (making it effectively 9h)
 # Splitting 1 hour in 6 x 10 minutes
 Finally, we split 1h sample in 10 samples by 6 minutes:
 ```
-python split_1h_in10min.py --root_1h=1h --target_dir=6x10min
+python split_1h_in10min.py --root_1h=1h --target_dir=6x10min --meta_path=<path to metadata>
 ```
 
 # Other
