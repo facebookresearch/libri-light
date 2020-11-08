@@ -24,7 +24,7 @@ We additionally provide a 4th subset containing potentially duplicated books.
 
 - [unlab_duplicate.tar  (4500 hours, 274 GB)](https://dl.fbaipublicfiles.com/librilight/data/duplicate.tar)
 
-The directory structure of the audio arvhices mirrors that of [LibriSpeech](http://www.openslr.org/12):
+The directory structure of the audio archives mirrors that of [LibriSpeech](http://www.openslr.org/12):
 
     dataset_name/speakerID/book_name/
 
