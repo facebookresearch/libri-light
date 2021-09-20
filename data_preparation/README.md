@@ -11,7 +11,7 @@ All scripts mentioned below can be found in this directory.
 
 #### 1A. Downloading
 
-The unlabelled data is spit into 3 subsets of increasing sizes (small, medium, large) in order to facilitate experimentation on smaller amounds of data (further, downloading the large dataset may take several days).
+The unlabelled data is spit into 3 subsets of increasing sizes (small, medium, large) in order to facilitate experimentation on smaller amounts of data (further, downloading the large dataset may take several days).
 
 -  [small.tar  (577 hours, 35 GB)](https://dl.fbaipublicfiles.com/librilight/data/small.tar)
     - md5: `c49207eb86a8e8ac895561c37232041e`
