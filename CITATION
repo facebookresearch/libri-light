@@ -1,0 +1,8 @@
+@inproceedings{kahn2020libri,
+  title={Libri-light: A benchmark for asr with limited or no supervision},
+  author={Kahn, Jacob and Riviere, Morgane and Zheng, Weiyi and Kharitonov, Evgeny and Xu, Qiantong and Mazar{\'e}, Pierre-Emmanuel and Karadayi, Julien and Liptchinsky, Vitaliy and Collobert, Ronan and Fuegen, Christian and others},
+  booktitle={ICASSP 2020-2020 IEEE International Conference on Acoustics, Speech and Signal Processing (ICASSP)},
+  pages={7669--7673},
+  year={2020},
+  organization={IEEE}
+}
