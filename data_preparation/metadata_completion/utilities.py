@@ -7,7 +7,24 @@ import progressbar
 import argparse
 import os
 import matplotlib
+from collections import namedtuple
 matplotlib.use('agg')
+
+
+def torchaudio_legacy_info(path):
+    """
+    https://github.com/facebookresearch/libri-light/issues/50
+    """
+    try:
+        info = torchaudio.info(path)[0]
+        length = info.length
+        rate = info.rate
+    except:
+        info = torchaudio.info(str(path))
+        length = info.num_frames
+        rate = info.sample_rate
+    d = dict(length=length, rate=rate)
+    return [namedtuple('LegacyInfo', d)(**d)]
 
 
 def get_all_metadata(path_dir, suffix="_metadata.json"):
@@ -188,7 +205,7 @@ def get_speaker_data(path_dir, list_metadata, pathWav):
             if not os.path.isfile(locPath):
                 continue
 
-            info = torchaudio.info(locPath)
+            info = torchaudio_legacy_info(locPath)
             size = (info[0].length / info[0].rate) / 3600
 
             speakers = speakerData['readers'][index]
@@ -226,7 +243,7 @@ def get_speaker_hours_data(list_metadata, audio_extension):
 
         path_audio_data = os.path.splitext(pathMetadata)[0] + audio_extension
 
-        info = torchaudio.info(path_audio_data)[0]
+        info = torchaudio_legacy_info(path_audio_data)[0]
         totAudio = info.length / (info.rate * 3600.)
 
         if speaker_name is None:
@@ -260,7 +277,7 @@ def get_hour_tag_repartition(list_metadata, tagName,
 
         path_audio_data = os.path.splitext(pathMetadata)[0] + audio_extension
 
-        info = torchaudio.info(path_audio_data)[0]
+        info = torchaudio_legacy_info(path_audio_data)[0]
         totAudio = info.length / (info.rate * 3600.)
 
         if value is None:
